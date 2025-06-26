@@ -1,6 +1,8 @@
 
 import { BrowserRouter as Router , Routes, Route } from 'react-router-dom';
 import Homepage from './pages/Homepage';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 // import { useState } from 'react'
 
@@ -12,6 +14,8 @@ export default function App(){
  <Router>
         <Routes>
             <Route path='/' element={<Homepage/>}></Route>
+            <Route path='/login' element={<Login/>}></Route>
+            <Route path='/register' element={<Register/>}></Route>
             
 
         </Routes>

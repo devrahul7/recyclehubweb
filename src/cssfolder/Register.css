@@ -1,0 +1,168 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.ecosajha-container {
+  max-width: 1800px !important;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.ecosajha-flex {
+  display: flex;
+  gap: 2rem;
+  align-items: stretch;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ecosajha-image {
+  flex: 1;
+  max-width: 500px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+.ecosajha-registration-card {
+  flex: 1;
+  min-width: 320px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.ecosajha-card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.ecosajha-card-header h1 {
+  color: #2d7d2d;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.ecosajha-card-header p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.ecosajha-recycle-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, #4CAF50, #2d7d2d);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  animation: ecosajha-spin 10s linear infinite;
+}
+
+@keyframes ecosajha-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.ecosajha-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.ecosajha-form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #2d7d2d;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.ecosajha-form-group input,
+.ecosajha-form-group select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: #fafafa;
+}
+
+.ecosajha-form-group input:focus,
+.ecosajha-form-group select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.ecosajha-form-group input::placeholder {
+  color: #999;
+}
+
+.ecosajha-register-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #4CAF50, #2d7d2d);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ecosajha-register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
+.ecosajha-login-link {
+  text-align: center;
+  margin-top: 2rem;
+  color: #666;
+}
+
+.ecosajha-login-link a {
+  color: #4CAF50;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ecosajha-login-link a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 992px) {
+  .ecosajha-flex {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ecosajha-image {
+    width: 90%;
+  }
+
+  .ecosajha-registration-card {
+    width: 90%;
+  }
+}
