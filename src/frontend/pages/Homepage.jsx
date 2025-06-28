@@ -3,21 +3,21 @@ import '../cssfolder/Homepage.css'
 import { useNavigate } from "react-router-dom";
 
 
-import houseImage from '../assets/house.png';
-import savinghandsImage from '../assets/savinghands.png';
-import recycleImage from '../assets/recycleimage.png';
-import dustbinImage from '../assets/dustbin.png';
-import infoImage from '../assets/info.png';
-import newspaperImage from '../assets/newspaper.jpg';
-import magazineImage from '../assets/magazine.jpg';
-import booksmagImage from '../assets/booksmagazine.jpg';
-import cardboardImage from '../assets/cardboard.jpg';
-import copyImage from '../assets/copy.jpg';
-import invitationImage from '../assets/invitationcard.jpg';
-import eggImage from '../assets/eggcrates.jpg';
-import cartoonImage from '../assets/cartoon.jpg';
-import confidentalImage from '../assets/confidental.jpg';
-import bottlesImage from '../assets/bottles.png';
+import houseImage from '../../assets/house.png';
+import savinghandsImage from '../../assets/savinghands.png';
+import recycleImage from '../../assets/recycleimage.png';
+import dustbinImage from '../../assets/dustbin.png';
+import infoImage from '../../assets/info.png';
+import newspaperImage from '../../assets/newspaper.jpg';
+import magazineImage from '../../assets/magazine.jpg';
+import booksmagImage from '../../assets/booksmagazine.jpg';
+import cardboardImage from '../../assets/cardboard.jpg';
+import copyImage from '../../assets/copy.jpg';
+import invitationImage from '../../assets/invitationcard.jpg';
+import eggImage from '../../assets/eggcrates.jpg';
+import cartoonImage from '../../assets/cartoon.jpg';
+import confidentalImage from '../../assets/confidental.jpg';
+import bottlesImage from '../../assets/bottles.png';
 import Footer from "../components/Footer";
 
 

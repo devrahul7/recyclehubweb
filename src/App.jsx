@@ -1,8 +1,10 @@
 
 import { BrowserRouter as Router , Routes, Route } from 'react-router-dom';
-import Homepage from './pages/Homepage';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Homepage from './frontend/pages/Homepage';
+import Login from './frontend/pages/Login';
+import Register from './frontend/pages/Register';
+
+
 
 // import { useState } from 'react'
 

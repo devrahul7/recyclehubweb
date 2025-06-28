@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import registerImage from '../assets/register.png';
+import registerImage from '../../assets/register.png';
 import '../cssfolder/Register.css';
 
 export default function Register() {
