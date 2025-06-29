@@ -1,9 +1,12 @@
 import Navbar from "../components/Navbar";
 import '../cssfolder/Login.css';
 import loginImage from '../../assets/login.png';
+import { useNavigate } from 'react-router-dom'; 
 
 
 export default function Login(){
+          const navigate = useNavigate()
+
   return (<>
 
 
@@ -45,7 +48,7 @@ export default function Login(){
                     </div>
 
                     <p class="ecosajha-login-register-text">
-                        Don't have an account? <a href="#" class="ecosajha-login-register-link">register now</a>
+                        Don't have an account? <a class="ecosajha-login-register-link" onClick={() => navigate('/register')} >register now</a>
                     </p>
 
                     <div class="ecosajha-login-button-group">

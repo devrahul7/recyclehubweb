@@ -1,0 +1,272 @@
+.ecosajha-login-reset * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.ecosajha-login-body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f9fafb;
+    min-height: 100vh;
+}
+
+/* Main Content */
+.ecosajha-login-main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* min-height: calc(100vh - 80px); */
+    padding: 30px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.ecosajha-login-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    width: 100%;
+    max-width: 1700px;
+    align-items: center;
+}
+
+/* Left Side - Illustration */
+.ecosajha-login-illustration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.ecosajha-login-illustration-placeholder {
+    width: 100%;
+    max-width: 1500px;
+    height: 780px;
+    background-color: #22c55e;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.ecosajha-login-earth-icon {
+    width: 128px;
+    height: 128px;
+    background-color: #86efac;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 32px;
+}
+
+.ecosajha-login-placeholder-text {
+    color: #6b7280;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.ecosajha-login-placeholder-subtext {
+    color: #6b7280;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Right Side - Login Form */
+.ecosajha-login-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.ecosajha-login-form-card {
+    width: 100%;
+    max-width: 820px;
+    max-height: 700px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 40px 32px;
+}
+
+.ecosajha-login-form-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.ecosajha-login-form-group {
+    margin-bottom: 24px;
+}
+
+.ecosajha-login-form-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.ecosajha-login-form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s ease;
+    background-color: #ffffff;
+}
+
+.ecosajha-login-form-input:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.ecosajha-login-form-input::placeholder {
+    color: #9ca3af;
+}
+
+.ecosajha-login-register-text {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+.ecosajha-login-register-link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.ecosajha-login-register-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.ecosajha-login-button-group {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+}
+
+.ecosajha-login-btn {
+    width: 100%;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.ecosajha-login-btn-primary {
+    background-color: #22c55e;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.ecosajha-login-btn-primary:hover {
+    background-color: #16a34a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.ecosajha-login-btn-secondary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.ecosajha-login-btn-secondary:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Login image styling */
+#login {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .ecosajha-login-content-wrapper {
+        gap: 40px;
+        max-width: 900px;
+    }
+    
+    .ecosajha-login-illustration-placeholder {
+        max-width: 380px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ecosajha-login-content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        max-width: 500px;
+    }
+
+    .ecosajha-login-illustration-placeholder {
+        max-width: 320px;
+        height: 280px;
+    }
+
+    .ecosajha-login-form-card {
+        padding: 32px 24px;
+        max-width: 100%;
+    }
+
+    .ecosajha-login-form-title {
+        font-size: 24px;
+    }
+
+    .ecosajha-login-main-container {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ecosajha-login-illustration-placeholder {
+        max-width: 280px;
+        height: 240px;
+    }
+
+    .ecosajha-login-form-card {
+        padding: 24px 20px;
+    }
+
+    .ecosajha-login-form-title {
+        font-size: 22px;
+        margin-bottom: 24px;
+    }
+
+    .ecosajha-login-form-input {
+        padding: 12px 14px;
+    }
+
+    .ecosajha-login-btn {
+        padding: 12px 20px;
+    }
+
+    .ecosajha-login-main-container {
+        min-height: calc(100vh - 60px);
+    }
+}
