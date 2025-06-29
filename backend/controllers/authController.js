@@ -21,29 +21,31 @@ const register = async (req, res) => {
       });
     }
 
-    const { username, fullName, email, password } = req.body;
+    const {  fullName, email, password , phone ,address,wasteType} = req.body;
 
     const existingUser = await User.findOne({
       where: {
-        [Op.or]: [
-          { email },
-          { username }
-        ]
+          email 
       }
     });
+
+    
+
 
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: existingUser.email === email ? 'Email already exists' : 'Username already exists'
+        message: 'Email already exists'
       });
     }
 
     const user = await User.create({
-      username,
-      fullName,
-      email,
-      password
+        fullName ,
+        email,
+        password,
+        phone,
+        address,
+        wasteType
     });
 
     const token = generateToken(user.id);
@@ -54,7 +56,6 @@ const register = async (req, res) => {
       data: {
         user: {
           id: user.id,
-          username: user.username,
           fullName: user.fullName,
           email: user.email
         },

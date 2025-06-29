@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import registerImage from '../../assets/register.png';
+import registerImage from '../assets/register.png';
 import '../cssfolder/Register.css';
 
 export default function Register() {
@@ -9,12 +9,16 @@ export default function Register() {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    console.log(data)
     try {
-      const res = await fetch('http://localhost:5173/register', {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
+
+      const response = await res.json()
+       console.log(response)
 
       if (res.ok) {
         alert('Registration successful!');

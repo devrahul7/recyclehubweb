@@ -1,39 +1,43 @@
 import { body } from 'express-validator';
 
 const registerValidation = [
-  body('username')
-    .trim()
-    .isLength({ min: 3, max: 50 })
-    .withMessage('Username must be between 3 and 50 characters')
-    .matches(/^[a-zA-Z0-9_]+$/)
-    .withMessage('Username can only contain letters, numbers, and underscores'),
-  
   body('fullName')
     .trim()
-    .isLength({ min: 3, max: 100 })
-    .withMessage('Full name must be between 3 and 100 characters')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('Full name must be between 2 and 100 characters')
     .matches(/^[a-zA-Z\s]+$/)
     .withMessage('Full name can only contain letters and spaces'),
-  
+    
   body('email')
     .trim()
     .isEmail()
     .withMessage('Please provide a valid email address')
     .normalizeEmail(),
-  
+    
   body('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long')
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
     .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number'),
-  
-  body('confirmPassword')
-    .custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error('Passwords do not match');
-      }
-      return true;
-    })
+    
+  body('phone')
+    .trim()
+    .notEmpty()
+    .withMessage('Phone number is required')
+    .matches(/^(\+977)?[0-9]{10}$/)
+    .withMessage('Please provide a valid Nepali phone number'),
+    
+  body('address')
+    .trim()
+    .isLength({ min: 5, max: 500 })
+    .withMessage('Address must be between 5 and 500 characters')
+    .notEmpty()
+    .withMessage('Address is required'),
+    
+  body('wasteType')
+    .trim()
+    .notEmpty()
+    .withMessage('Primary waste type is required')
 ];
 
 const loginValidation = [
@@ -42,7 +46,7 @@ const loginValidation = [
     .isEmail()
     .withMessage('Please provide a valid email address')
     .normalizeEmail(),
-  
+    
   body('password')
     .notEmpty()
     .withMessage('Password is required')

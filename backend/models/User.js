@@ -8,20 +8,12 @@ const User = sequelize.define('User', {
     primaryKey: true,
     autoIncrement: true
   },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-    validate: {
-      len: [3, 50],
-      notEmpty: true
-    }
-  },
   fullName: {
     type: DataTypes.STRING,
     allowNull: false,
+    field: 'full_name',
     validate: {
-      len: [3, 100],
+      len: [2, 100],
       notEmpty: true
     }
   },
@@ -41,9 +33,35 @@ const User = sequelize.define('User', {
       len: [6, 255],
       notEmpty: true
     }
+  },
+  phone: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: 'phone_number',
+    validate: {
+      notEmpty: true
+    }
+  },
+  address: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [5, 500],
+      notEmpty: true
+    }
+  },
+  wasteType: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: 'primary_waste_type',
+    validate: {
+      notEmpty: true
+    }
   }
 }, {
   timestamps: true,
+  underscored: true,
+  tableName: 'users',
   hooks: {
     beforeCreate: async (user) => {
       if (user.password) {

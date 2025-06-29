@@ -1,15 +1,9 @@
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize('postgres', 'postgres', '33533', {
+const sequelize = new Sequelize('ecosajha', 'postgres', 'admin123', {
   host: 'localhost',
   dialect: 'postgres',
   logging: false,
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
 });
 
 const connectDB = async () => {
