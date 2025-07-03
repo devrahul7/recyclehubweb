@@ -153,4 +153,31 @@ const getProfile = async (req, res) => {
   }
 };
 
-export { register, login, getProfile };
+const getAllUsers = async (req, res) => {
+  try {
+    const user = await User.findAll();
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: { user }
+    });
+  } catch (error) {
+    console.error('Get profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+      error: error.message
+    });
+  }
+};
+
+
+
+export { register, login, getProfile, getAllUsers };

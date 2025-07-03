@@ -1,3 +1,4 @@
+// ... other imports remain the same
 import Navbar from "../components/Navbar";
 import '../cssfolder/Login.css';
 import loginImage from '../assets/login.png';
@@ -6,7 +7,7 @@ import { useForm } from 'react-hook-form';
 
 export default function Login() {
     const navigate = useNavigate();
-    
+
     const {
         register,
         handleSubmit,
@@ -22,42 +23,35 @@ export default function Login() {
     const onSubmit = async (data) => {
         try {
             console.log('Login data:', data);
-        const res = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+            const res = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
 
-      const response = await res.json()
+            const response = await res.json();
 
-      if(response.success && response.data.token){
-        localStorage.setItem("token", response.data.token)
-        navigate("/dashboard")
-      }else {
-        alert("password is invalid")
-      }
-            // navigate('/dashboard');
+            if (response.success && response.data.token) {
+                localStorage.setItem("token", response.data.token);
+                navigate("/dashboard");
+            } else {
+                alert("password is invalid");
+            }
         } catch (error) {
             console.error('Login failed:', error);
-            // Handle login error (show toast, set error message, etc.)
         }
     };
 
-    const handleResetPassword = () => {
-        // Add your reset password logic here
-        console.log('Reset password clicked');
-        // navigate('/reset-password');
+    const handleForgotPassword = () => {
+        console.log('Forgot password clicked');
     };
 
     return (
         <>
             <div className="ecosajha-login-body">
-                <Navbar/>
-                
-                {/* Main Content */}
+                <Navbar />
                 <main className="ecosajha-login-main-container">
                     <div className="ecosajha-login-content-wrapper">
-                        {/* Left Side - Illustration */}
                         <div className="ecosajha-login-illustration-container">
                             <div className="ecosajha-login-illustration-placeholder">
                                 <div>
@@ -65,12 +59,11 @@ export default function Login() {
                                 </div>
                             </div>
                         </div>
-                        
-                        {/* Right Side - Login Form */}
+
                         <div className="ecosajha-login-form-container">
                             <div className="ecosajha-login-form-card">
-                                <h2 className="ecosajha-login-form-title">Log In</h2>
-                                
+                                <h2 className="ecosajha-login-form-title">Log In to Access Dashboard</h2>
+
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="ecosajha-login-form-group">
                                         <label htmlFor="email" className="ecosajha-login-form-label">
@@ -95,7 +88,7 @@ export default function Login() {
                                             </span>
                                         )}
                                     </div>
-                                    
+
                                     <div className="ecosajha-login-form-group">
                                         <label htmlFor="password" className="ecosajha-login-form-label">
                                             Password
@@ -119,31 +112,34 @@ export default function Login() {
                                             </span>
                                         )}
                                     </div>
-                                    
+
                                     <p className="ecosajha-login-register-text">
-                                        Don't have an account? 
-                                        <a 
-                                            className="ecosajha-login-register-link" 
+                                        Don't have an account?
+                                        <a
+                                            className="ecosajha-login-register-link"
                                             onClick={() => navigate('/register')}
                                         >
                                             register now
                                         </a>
                                     </p>
-                                    
+
                                     <div className="ecosajha-login-button-group">
-                                        <button 
+                                        <button
                                             type="submit"
                                             className="ecosajha-login-btn ecosajha-login-btn-primary"
                                             disabled={isSubmitting}
                                         >
                                             {isSubmitting ? 'Logging in...' : 'Log In'}
                                         </button>
-                                        <button 
+                                        <button
                                             type="button"
                                             className="ecosajha-login-btn ecosajha-login-btn-secondary"
-                                            onClick={handleResetPassword}
+                                            onClick={() => {
+                                                handleForgotPassword();
+                                                navigate('/forgotpassword');
+                                            }}
                                         >
-                                            Reset Password
+                                            Forgot Password
                                         </button>
                                     </div>
                                 </form>

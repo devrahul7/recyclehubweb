@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import registerImage from '../assets/register.png';
 import '../cssfolder/Register.css';
@@ -7,6 +8,7 @@ import '../cssfolder/Register.css';
 export default function Register() {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data) => {
     console.log(data)
@@ -18,7 +20,8 @@ export default function Register() {
       });
 
       const response = await res.json()
-       console.log(response)
+
+      console.log(response)
 
       if (res.ok) {
         alert('Registration successful!');
@@ -31,6 +34,10 @@ export default function Register() {
       console.error(err);
       alert('Error connecting to server.');
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -58,7 +65,21 @@ export default function Register() {
               </div>
               <div className="ecosajha-form-group">
                 <label>Password *</label>
-                <input type="password" {...register("password", { required: true })} placeholder="choose password" />
+                <div className="ecosajha-password-input-container">
+                  <input 
+                    type={showPassword ? "text" : "password"} 
+                    {...register("password", { required: true })} 
+                    placeholder="choose password" 
+                  />
+                  <button 
+                    type="button" 
+                    className="ecosajha-password-toggle-btn"
+                    onClick={togglePasswordVisibility}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? "👁️" : "🙈"}
+                  </button>
+                </div>
               </div>
               <div className="ecosajha-form-group">
                 <label>Phone Number *</label>
