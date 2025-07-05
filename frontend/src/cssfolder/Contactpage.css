@@ -1,0 +1,330 @@
+
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 🎨 BODY CANVAS - The Foundation of Dreams */
+        .eco-universe {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* 🏔️ CROWN NAVBAR - The Majestic Mountain Peak */
+        .emerald-crown {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            padding: 15px 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* 🧭 NAVIGATION COMPASS - The Guiding Star */
+        .compass-navigator {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 🚀 BRAND ROCKET - The Identity Launch Pad */
+        .rocket-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* 🌟 STELLAR MENU - The Constellation of Choices */
+        .stellar-constellation {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .stellar-constellation a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .stellar-constellation a:hover {
+            color: #e8f5e8;
+        }
+
+        .stellar-constellation a.golden-star {
+            color: #ffeb3b;
+        }
+
+        /* 🎭 STAGE THEATER - The Main Performance Arena */
+        .grand-theater {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 🦸 HERO SPOTLIGHT - The Champion's Podium */
+        .champion-spotlight {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        /* 🌱 NATURE'S BADGE - The Eco Emblem */
+        .natures-badge {
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+
+        /* 📜 EPIC SCROLL - The Story Unfolds */
+        .epic-scroll h1 {
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .epic-scroll p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* 🎯 MAGIC TRIGGER - The Action Catalyst */
+        .magic-trigger {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .magic-trigger:hover {
+            background: #45a049;
+        }
+
+        /* 💎 CRYSTAL PALACE - The Contact Sanctuary */
+        .crystal-palace {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .crystal-palace h2 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* 🎪 COMMUNICATION CIRCUS - The Connection Ring */
+        .communication-ring {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        /* 🔮 MYSTICAL ORBS - The Communication Spheres */
+        .mystical-orb {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .whatsapp-emerald {
+            background: #25D366;
+        }
+
+        .viber-amethyst {
+            background: #665CAC;
+        }
+
+        .gmail-rainbow {
+            background: linear-gradient(45deg, #EA4335, #4285F4, #34A853, #FBBC05);
+        }
+
+        /* 📢 MEGAPHONE MESSAGE - The Voice Amplifier */
+        .megaphone-message {
+            font-size: 20px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* 🎨 MASTERPIECE CANVAS - The Action Gallery */
+        .masterpiece-canvas {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* 🎭 DRAMA STAGE - The Performance Platform */
+        .drama-stage {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        /* 🎬 MOVIE SCENE - The Left Act */
+        .movie-scene {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* 🎪 CIRCUS ANNOUNCEMENT - The Bold Declaration */
+        .circus-announcement {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* 🎵 SYMPHONY BUTTON - The Musical Trigger */
+        .symphony-button {
+            width: 60px;
+            height: 60px;
+            background: #2196F3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .symphony-button:hover {
+            background: #1976D2;
+        }
+
+        /* 🎪 FINALE CURTAIN - The Right Act */
+        .finale-curtain {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* 🏆 CHAMPION TITLE - The Victory Banner */
+        .champion-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        /* 🎗️ HONOR RIBBON - The Achievement Badge */
+        .honor-ribbon {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* 🗑️ TREASURE CHEST - The Waste Vessel */
+        .treasure-chest {
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            margin-left: 20px;
+        }
+
+        /* 🏰 CASTLE FOUNDATION - The Website Base */
+        .castle-foundation {
+            background: #f0f0f0;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+
+        /* 🏛️ MONUMENT HALL - The Footer Temple */
+        .monument-hall {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 🕰️ TIME CAPSULE - The Legacy Keeper */
+        .time-capsule {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* 🌅 HORIZON LINKS - The Future Paths */
+        .horizon-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .horizon-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .horizon-links a:hover {
+            color: #4CAF50;
+        }
+
+        /* 📱 MOBILE MAGIC - The Pocket-Sized Wonder */
+        @media (max-width: 768px) {
+            .stellar-constellation {
+                display: none;
+            }
+
+            .champion-spotlight {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .epic-scroll h1 {
+                font-size: 36px;
+            }
+
+            .drama-stage {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .movie-scene {
+                flex-direction: column;
+            }
+
+            .monument-hall {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }

@@ -16,9 +16,10 @@ const registerValidation = [
     
   body('password')
     .isLength({ min: 4 })
-    .withMessage('Password must be at least 6 characters long')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
-    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number'),
+    .withMessage('Password must be at least 4 characters long')
+    // .matches(/^(?=.*[a-z])     (?=.*[A-Z])       (?=.*\d)/)
+    .matches(/^(?=.*[a-z])(?=.*\d)/)
+    .withMessage('Password must contain at least one lowercase letter, and one number'),
     
   body('phone')
     .trim()

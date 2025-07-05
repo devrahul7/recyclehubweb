@@ -9,6 +9,34 @@
     background-color: #f9fafb;
     min-height: 100vh;
 }
+.ecosajha-login-password-container {
+    position: relative;
+}
+
+.ecosajha-login-password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.ecosajha-login-password-toggle:hover {
+    color: #374151;
+}
+
+.ecosajha-login-password-toggle:focus {
+    outline: none;
+    color: #374151;
+}
 
 /* Main Content */
 .ecosajha-login-main-container {
