@@ -1,13 +1,17 @@
 import Navbar from "../components/Navbar";
 import '../cssfolder/Homepage.css'
 import { useNavigate } from "react-router-dom";
-
+import { useState } from "react";
 
 import houseImage from '../assets/house.png';
 import savinghandsImage from '../assets/savinghands.png';
 import recycleImage from '../assets/recycleimage.png';
 import dustbinImage from '../assets/dustbin.png';
 import infoImage from '../assets/info.png';
+import bottlesImage from '../assets/bottles.png';
+import Footer from "../components/Footer";
+
+// Paper category images
 import newspaperImage from '../assets/newspaper.jpg';
 import magazineImage from '../assets/magazine.jpg';
 import booksmagImage from '../assets/booksmagazine.jpg';
@@ -17,12 +21,335 @@ import invitationImage from '../assets/invitationcard.jpg';
 import eggImage from '../assets/eggcrates.jpg';
 import cartoonImage from '../assets/cartoon.jpg';
 import confidentalImage from '../assets/confidental.jpg';
-import bottlesImage from '../assets/bottles.png';
-import Footer from "../components/Footer";
 
+
+// Glass and Plastic category images 
+
+import plasticBottleImage from '../assets/plasticbottle.jpg';
+import glassBottleImage from '../assets/glassbottles.jpg';
+import plasticBagImage from '../assets/plasticbag.jpeg';
+import containerImage from '../assets/plasticcontainer.jpg';
+import jarImage from '../assets/glassjars.jpg';
+import cupImage from '../assets/plasticcup.jpeg';
+import tubeImage from '../assets/plastictubes.webp';
+import wrapperImage from '../assets/plasticwrappers.jpeg';
+import toyImage from '../assets/plastictoys.jpg';
+
+//Metal and steel category
+
+import aluminumCanImage from '../assets/alumuniumcans.jpeg';
+import ironImage from '../assets/ironscrap.jpeg';
+import copperImage from '../assets/copperwire.jpeg';
+import steelImage from '../assets/steelitems.jpeg';
+import wireImage from '../assets/mixedmetalwire.jpeg';
+import metalScrapImage from '../assets/heavymetalscrap.jpeg';
+
+
+// E-waste category 
+import mobileImage from '../assets/mobilephones.jpeg';
+import laptopImage from '../assets/laptoprecycle.jpeg';
+import tvImage from '../assets/television.jpeg';
+import printerImage from '../assets/printer.jpeg';
+import batteryImage from '../assets/battery.jpeg';
+import circuitImage from '../assets/circuitimage.jpeg';
+
+import brassPipeImage from '../assets/brassimage.jpeg';
+import brassVesselImage from '../assets/brassvessel.jpeg';
+import brassFittingImage from '../assets/brassfittings.jpeg';
+
+// petBottle category 
+
+import petBottleImage from '../assets/petbottle.webp';
+import beerBottleImage from '../assets/beerbottle.jpeg';
+import wineBottleImage from '../assets/winebottle.jpeg';
+
+
+// Others category 
+import rubberImage from '../assets/rubberwaste.jpeg';
+import fabricImage from '../assets/fabrics.jpeg';
+import woodImage from '../assets/woodscrap.jpg';
 
 export default function Homepage(){
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [activeCategory, setActiveCategory] = useState('Paper');
+
+    const playWelcomeAudio = () => {
+    // Check if speech synthesis is supported   
+    if ('speechSynthesis' in window) {
+        // Create a new speech synthesis utterance
+        const utterance = new SpeechSynthesisUtterance('Rahul Welcome  you to ecosajha recycling website. Lets Be a Proud Recycler . Recycle Now');
+        
+        // Optional: Configure voice properties
+        utterance.rate = 1; // Speed of speech
+        utterance.pitch = 1; // Pitch of voice
+        utterance.volume = 1; // Volume level
+        
+        // Optional: Set voice (you can customize this)
+        const voices = speechSynthesis.getVoices();
+        if (voices.length > 0) {
+            utterance.voice = voices[0]; // Use first available voice
+        }
+        
+        // Play the audio
+        speechSynthesis.speak(utterance);
+    } else {
+        // Fallback for browsers that don't support speech synthesis
+        console.log('Speech synthesis not supported');
+        alert('Welcome to recycling website');
+    }
+};
+
+    const categoryData = {
+        'Paper': [
+            {
+                image: newspaperImage,
+                name: 'Newspaper',
+                price: 'Est. Rs.9/Kgs',
+                description: 'What are you going to do with old news anyway'
+            },
+            {
+                image: magazineImage,
+                name: 'Magazines',
+                price: 'Est. Rs.7/Kgs',
+                description: 'Even guests prefer new issues'
+            },
+            {
+                image: booksmagImage,
+                name: 'Books & Magazine',
+                price: 'Est. Rs.8/Kgs',
+                description: 'Give your book a new life'
+            },
+            {
+                image: cardboardImage,
+                name: 'Cardboard',
+                price: 'Est. Rs.9/Kgs',
+                description: "Don't hoard the board"
+            },
+            {
+                image: copyImage,
+                name: 'Copy',
+                price: 'Est. Rs.12/Kgs',
+                description: 'Copy, paste, recycle'
+            },
+            {
+                image: eggImage,
+                name: 'Egg crates',
+                price: 'Est. Rs.5/Kgs',
+                description: 'Create new crates'
+            },
+            {
+                image: invitationImage,
+                name: 'Invitation cards',
+                price: 'Est. Rs.6/Kgs',
+                description: 'You are invited to recycle'
+            },
+            {
+                image: cartoonImage,
+                name: 'Carton',
+                price: 'Est. Rs.8/Kgs',
+                description: 'Carton recycling made easy'
+            },
+            {
+                image: confidentalImage,
+                name: 'Confidential Documents',
+                price: 'Est. Rs.7/Kgs',
+                description: 'Secure document disposal'
+            }
+        ],
+        'Glass and Plastic': [
+            {
+                image: plasticBottleImage,
+                name: 'Plastic Bottles',
+                price: 'Est. Rs.15/Kgs',
+                description: 'Clear and colored plastic bottles'
+            },
+            {
+                image: glassBottleImage,
+                name: 'Glass Bottles',
+                price: 'Est. Rs.8/Kgs',
+                description: 'Beer, wine, and beverage bottles'
+            },
+            {
+                image: plasticBagImage,
+                name: 'Plastic Bags',
+                price: 'Est. Rs.10/Kgs',
+                description: 'Shopping and grocery bags'
+            },
+            {
+                image: containerImage,
+                name: 'Plastic Containers',
+                price: 'Est. Rs.12/Kgs',
+                description: 'Food containers and tubs'
+            },
+            {
+                image: jarImage,
+                name: 'Glass Jars',
+                price: 'Est. Rs.6/Kgs',
+                description: 'Pickle and jam jars'
+            },
+            {
+                image: cupImage,
+                name: 'Plastic Cups',
+                price: 'Est. Rs.8/Kgs',
+                description: 'Disposable cups and glasses'
+            },
+            {
+                image: tubeImage,
+                name: 'Plastic Tubes',
+                price: 'Est. Rs.14/Kgs',
+                description: 'Cosmetic and toothpaste tubes'
+            },
+            {
+                image: wrapperImage,
+                name: 'Plastic Wrappers',
+                price: 'Est. Rs.5/Kgs',
+                description: 'Food packaging wrappers'
+            },
+            {
+                image: toyImage,
+                name: 'Plastic Toys',
+                price: 'Est. Rs.7/Kgs',
+                description: 'Broken or unused plastic toys'
+            }
+        ],
+        'Metal & Steel': [
+            {
+                image: aluminumCanImage,
+                name: 'Aluminum Cans',
+                price: 'Est. Rs.120/Kgs',
+                description: 'Beverage cans and containers'
+            },
+            {
+                image: ironImage,
+                name: 'Iron Scrap',
+                price: 'Est. Rs.25/Kgs',
+                description: 'Old iron pieces and rods'
+            },
+            {
+                image: copperImage,
+                name: 'Copper Wire',
+                price: 'Est. Rs.580/Kgs',
+                description: 'Electrical copper wiring'
+            },
+            {
+                image: steelImage,
+                name: 'Steel Items',
+                price: 'Est. Rs.28/Kgs',
+                description: 'Steel utensils and appliances'
+            },
+            {
+                image: wireImage,
+                name: 'Mixed Metal Wire',
+                price: 'Est. Rs.45/Kgs',
+                description: 'Various metal wires and cables'
+            },
+            {
+                image: metalScrapImage,
+                name: 'Heavy Metal Scrap',
+                price: 'Est. Rs.22/Kgs',
+                description: 'Large metal pieces and machinery parts'
+            }
+        ],
+        'E-waste': [
+            {
+                image: mobileImage,
+                name: 'Mobile Phones',
+                price: 'Est. Rs.50/piece',
+                description: 'Old smartphones and feature phones'
+            },
+            {
+                image: laptopImage,
+                name: 'Laptops',
+                price: 'Est. Rs.200/piece',
+                description: 'Broken or old laptops'
+            },
+            {
+                image: tvImage,
+                name: 'Television',
+                price: 'Est. Rs.150/piece',
+                description: 'CRT and LCD televisions'
+            },
+            {
+                image: printerImage,
+                name: 'Printers',
+                price: 'Est. Rs.100/piece',
+                description: 'Inkjet and laser printers'
+            },
+            {
+                image: batteryImage,
+                name: 'Batteries',
+                price: 'Est. Rs.80/Kgs',
+                description: 'Mobile and laptop batteries'
+            },
+            {
+                image: circuitImage,
+                name: 'Circuit Boards',
+                price: 'Est. Rs.300/Kgs',
+                description: 'Computer and electronic boards'
+            }
+        ],
+        'Brass': [
+            {
+                image: brassPipeImage,
+                name: 'Brass Pipes',
+                price: 'Est. Rs.380/Kgs',
+                description: 'Plumbing brass pipes and fittings'
+            },
+            {
+                image: brassVesselImage,
+                name: 'Brass Vessels',
+                price: 'Est. Rs.350/Kgs',
+                description: 'Traditional brass utensils'
+            },
+            {
+                image: brassFittingImage,
+                name: 'Brass Fittings',
+                price: 'Est. Rs.370/Kgs',
+                description: 'Door handles and decorative items'
+            }
+        ],
+        'PET bottle': [
+            {
+                image: petBottleImage,
+                name: 'PET Bottles',
+                price: 'Est. Rs.18/Kgs',
+                description: 'Clear plastic beverage bottles'
+            },
+            {
+                image: beerBottleImage,
+                name: 'Beer Bottles',
+                price: 'Est. Rs.8/Kgs',
+                description: 'Glass beer bottles'
+            },
+            {
+                image: wineBottleImage,
+                name: 'Wine Bottles',
+                price: 'Est. Rs.6/Kgs',
+                description: 'Glass wine and liquor bottles'
+            }
+        ],
+        'Others': [
+            {
+                image: rubberImage,
+                name: 'Rubber Items',
+                price: 'Est. Rs.15/Kgs',
+                description: 'Rubber tubes and sheets'
+            },
+            {
+                image: fabricImage,
+                name: 'Fabric Waste',
+                price: 'Est. Rs.8/Kgs',
+                description: 'Old clothes and textiles'
+            },
+            {
+                image: woodImage,
+                name: 'Wood Scrap',
+                price: 'Est. Rs.5/Kgs',
+                description: 'Wooden furniture pieces'
+            }
+        ]
+    };
+
     return (
         <>
             <div>
@@ -35,33 +362,45 @@ export default function Homepage(){
                         <button className="request-btn">Request Pickup</button>
                     </div>
                     <div className="hero-icons">
-                         
-                    <div> <img src={houseImage} alt="house image"/> </div>
-                    <div> <img src={savinghandsImage} alt="savinghands image"/> </div>
-                    <div> <img id="recycle" src={recycleImage} alt="recycle image"  /> </div>
-
+                        <div className="hero-icon-item">
+                            <img src={houseImage} alt="house image"/> 
+                        </div>
+                        <div className="hero-icon-item">
+                            <img src={savinghandsImage} alt="savinghands image"/> 
+                        </div>
+                        <div className="hero-icon-item">
+                            <img id="recycle" src={recycleImage} alt="recycle image" /> 
+                        </div>
                     </div>
                 </section>
 
                 {/* Video Section */}
                 <section className="video-section">
-                    <h2 className="trash">Got TRASH</h2>
-                    <div className="play-btn">▶</div>
-                    <div className="video-text">
-                        <p><strong>Be a Proud Recycler</strong></p>
-                        <p>Request pickup now</p>
+                    <div className="video-content">
+                        <h2 className="trash">Got TRASH</h2>
+<div className="play-btn" onClick={playWelcomeAudio}>▶</div>
+                        <div className="video-text">
+                            <p><strong>Be a Proud Recycler</strong></p>
+                            <p>Request pickup now</p>
+                        </div>
                     </div>
-                    <div > <img id="dustbin" src={dustbinImage} alt="dustbin image"  /> </div>
-                    
+                    <div className="video-image">
+                        <img id="dustbin" src={dustbinImage} alt="dustbin image" /> 
+                    </div>
                 </section>
-                    <div > <img id="bottles" src={bottlesImage} alt="bottles image"  /> </div>
+
+                <div className="bottles-container">
+                    <img id="bottles" src={bottlesImage} alt="bottles image" /> 
+                </div>
 
                 {/* About Section */}
                 <section className="about-section">
                     <div className="about-content">
                         <div className="about-text">
                             <h2>Why EcoSajha?</h2>
-                   <div > <img id="infoimage" src={infoImage} alt="info image"  /> </div>
+                            <div className="info-image-container">
+                                <img id="infoimage" src={infoImage} alt="info image" /> 
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -71,91 +410,40 @@ export default function Homepage(){
                     <h2 className="categories-title">WHAT WE BUY?</h2>
                     
                     <div className="categories-nav">
-                        <button className="category-tab active">Paper</button>
-                        <button className="category-tab">Glass and Plastic</button>
-                        <button className="category-tab">Metal & Steel</button>
-                        <button className="category-tab">E-waste</button>
-                        <button className="category-tab">Others</button>
-                        <button className="category-tab">Brass</button>
+                        {Object.keys(categoryData).filter(cat => cat !== 'PET bottle').map((category) => (
+                            <button 
+                                key={category}
+                                className={`category-tab ${activeCategory === category ? 'active' : ''}`}
+                                onClick={() => setActiveCategory(category)}
+                            >
+                                {category}
+                            </button>
+                            
+                        ))}
+                         <button 
+                            className={`category-tab ${activeCategory === 'PET bottle' ? 'active' : ''}`}
+                            onClick={() => setActiveCategory('PET bottle')}
+                        >
+                            PET bottle
+                        </button>
                     </div>
 
-                    <div style={{textAlign: "center", marginBottom: "30px"}}>
-                        <button className="category-tab">PET bottle</button>
-                    </div>
+                   
 
                     {/* Items Grid */}
                     <div className="items-grid">
-                        {/* Row 1 */}
-                        <div className="item-card">
-                            <div > <img className="news" src={newspaperImage} alt="newspaper image"  /> </div>
-                            <h3>Newspaper</h3>
-                            <p className="item-price">Est. Rs.9/Kgs</p>
-                            <p className="item-description">What are you going to do with old news anyway</p>
-                        </div>
-
-                        <div className="item-card">
-                            <div > <img className="news" src={magazineImage} alt="magazine image"  /> </div>
-                            <h3>Magazines</h3>
-                            <p className="item-price">Est. Rs.7/Kgs</p>
-                            <p className="item-description">Even guests prefer new issues</p>
-                        </div>
-
-                        <div className="item-card">
-                            <div > <img className="news" src={booksmagImage} alt="books and magazine image"  /> </div>
-                            <h3>Books & Magazine</h3>
-                            <p className="item-price">Est. Rs.8/Kgs</p>
-                            <p className="item-description">Give your book a new life</p>
-                        </div>
-
-                        {/* Row 2 */}
-                        <div className="item-card">
-                          <div > <img className="news" src={cardboardImage} alt="cardboard image"  /> </div>
-
-                            <h3>Cardboard</h3>
-                            <p className="item-price">Est. Rs.9/Kgs</p>
-                            <p className="item-description">Don't hoard the board</p>
-                        </div>
-
-                        <div className="item-card">
-                      <div > <img className="news" src={copyImage} alt="copy image"  /> </div>
-                            <h3>Copy</h3>
-                            <p className="item-price">Est. Rs.12/Kgs</p>
-                            <p className="item-description">Copy, paste, recycle</p>
-                        </div>
-
-                        <div className="item-card">
-                             <div > <img className="news" src={eggImage} alt="eggcrates image"  /> </div>
-                            <h3>Egg crates</h3>
-                            <p className="item-price">Est. Rs.5/Kgs</p>
-                            <p className="item-description">Create new crates</p>
-                        </div>
-
-                        {/* Row 3 */}
-                        <div className="item-card">
-                            <div > <img className="news" src={invitationImage} alt="invitation card image"  /> </div>
-                            <h3>Invitation cards</h3>
-                            <p className="item-price">Est. Rs.6/Kgs</p>
-                            <p className="item-description">You are invited to recycle</p>
-                        </div>
-
-                        <div className="item-card">
-                         <div > <img className="news" src={cartoonImage} alt="cartoonimage"  /> </div>
-                            <h3>Carton</h3>
-                            <p className="item-price">Est. Rs.8/Kgs</p>
-                            <p className="item-description">carton</p>
-                        </div>
-
-                        <div className="item-card">
-                       <div > <img className="news" src={confidentalImage} alt="confidental document image"  /> </div>
-
-                            <h3>Confidential Documents</h3>
-                            <p className="item-price">Est. Rs.7/Kgs</p>
-                            <p className="item-description"></p>
-                        </div>
+                        {categoryData[activeCategory].map((item, index) => (
+                            <div key={index} className="item-card">
+                                <div className="item-image">
+                                    <img className="news" src={item.image} alt={`${item.name} image`} /> 
+                                </div>
+                                <h3>{item.name}</h3>
+                                <p className="item-price">{item.price}</p>
+                                <p className="item-description">{item.description}</p>
+                            </div>
+                        ))}
                     </div>
                 </section>
-               
-                
 
                 {/* Footer Info */}
                 <footer className="footer-info">
@@ -164,20 +452,16 @@ export default function Homepage(){
                         <ul>
                             <li>• All rates are estimates</li>
                             <li>• Sometimes rates are mutually decided at the venue</li>
-                            <li>• Not everything listed here as examples might be accepted by all Khalistist friends</li>
+                            <li>• Not everything listed here as examples might be accepted by all partners</li>
                             <li>• Broken glass items are not accepted</li>
+                            <li>• E-waste items must be in working condition for better rates</li>
+                            <li>• Metal items should be clean and sorted by type</li>
                         </ul>
                     </div>
                 </footer>
 
-              <Footer/>
-             
+                <Footer/>
             </div>
         </>
     );
 }
-
-
-
-
-

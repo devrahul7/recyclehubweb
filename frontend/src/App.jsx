@@ -7,6 +7,7 @@ import { DashboardPage } from './pages/Dashboardpage';
 import Forgotpassword from './pages/Forgotpassword';
 import Aboutpage from './pages/Aboutpage';
 import Contactpage from './pages/Contactpage';
+import './index.css'
 
 
 
