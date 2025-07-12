@@ -7,11 +7,10 @@ import { DashboardPage } from './pages/Dashboardpage';
 import Forgotpassword from './pages/Forgotpassword';
 import Aboutpage from './pages/Aboutpage';
 import Contactpage from './pages/Contactpage';
-import './index.css'
+
+import RequestPickup from './pages/RequestPickup';
 
 
-
-// import { useState } from 'react'
 
 export default function App(){
   return (
@@ -27,6 +26,9 @@ export default function App(){
             <Route path='/forgotpassword' element={<Forgotpassword/>}></Route>
             <Route path='/about' element={<Aboutpage/>}></Route>
             <Route path='/contact' element={<Contactpage/>}></Route>
+
+            <Route path='/requestpickup' element={<RequestPickup/>}></Route>
+
 
         </Routes>
 

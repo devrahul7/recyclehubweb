@@ -1,53 +1,66 @@
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import '../cssfolder/Navbar.css';
 
-export default function Navbar() {
+export default function EcoSajhaNavbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
-    <nav className="flex flex-col md:flex-row justify-between items-center list-none py-4 px-6 md:pr-10 bg-green-500 text-black shadow-lg sticky top-0 z-50 min-h-16 md:min-h-15">
+    <nav className="ecosajha-navigation-wrapper">
       {/* Logo */}
       <div 
-        className={` mx-12 text-4xl font-black text-green-800 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105 mb-3 md:mb-0 ${
-          location.pathname === '/' ? 'text-green-900 scale-105' : ''
+        className={`ecosajha-brand-logo-container ${
+          location.pathname === '/' ? 'ecosajha-brand-logo-active' : ''
         }`}
-        onClick={() => navigate('/')}
+        onClick={() => { navigate('/'); setMenuOpen(false); }}
       >
         EcoSajha Recycle
       </div>
-      
+
+      {/* Hamburger Icon for small screens */}
+      <div className="ecosajha-hamburger-icon" onClick={toggleMenu}>
+        <div className={`bar ${menuOpen ? 'open' : ''}`}></div>
+        <div className={`bar ${menuOpen ? 'open' : ''}`}></div>
+        <div className={`bar ${menuOpen ? 'open' : ''}`}></div>
+      </div>
+
       {/* Navigation Links */}
-      <div className=" flex flex-col md:flex-row items-center gap-2 md:gap-4">
-    
-        <div 
-          className={`text-lg md:text-2xl font-medium cursor-pointer transition-all duration-300 ease-in-out hover:text-blue-700 hover:font-bold hover:border-b-2 hover:border-white px-2 py-1 text-center ${
-            location.pathname === '/about' ? 'text-blue-700 font-bold border-b-2 border-white' : ''
+      <div className={`ecosajha-navigation-links-cluster ${menuOpen ? 'open' : ''}`}>
+        <div
+          className={`ecosajha-nav-link-item ${
+            location.pathname === '/about' ? 'ecosajha-nav-link-active-state' : ''
           }`}
-          onClick={() => navigate('/about')}
+          onClick={() => { navigate('/about'); setMenuOpen(false); }}
         >
           About
         </div>
         <div 
-          className={`text-lg md:text-2xl font-medium cursor-pointer transition-all duration-300 ease-in-out hover:text-blue-700 hover:font-bold hover:border-b-2 hover:border-white px-2 py-1 text-center ${
-            location.pathname === '/contact' ? 'text-blue-700 font-bold border-b-2 border-white' : ''
+          className={`ecosajha-nav-link-item ${
+            location.pathname === '/contact' ? 'ecosajha-nav-link-active-state' : ''
           }`}
-          onClick={() => navigate('/contact')}
+          onClick={() => { navigate('/contact'); setMenuOpen(false); }}
         >
           Contact
         </div>
         <div 
-          className={`text-lg md:text-2xl font-medium cursor-pointer transition-all duration-300 ease-in-out hover:text-blue-700 hover:font-bold hover:border-b-2 hover:border-white px-2 py-1 text-center ${
-            location.pathname === '/login' ? 'text-blue-700 font-bold border-b-2 border-white' : ''
+          className={`ecosajha-nav-link-item ${
+            location.pathname === '/login' ? 'ecosajha-nav-link-active-state' : ''
           }`}
-          onClick={() => navigate('/login')}
+          onClick={() => { navigate('/login'); setMenuOpen(false); }}
         >
           Login
         </div>
         <div 
-          className={`text-lg md:text-2xl font-medium cursor-pointer transition-all duration-300 ease-in-out hover:text-blue-700 hover:font-bold hover:border-b-2 hover:border-white px-2 py-1 text-center ${
-            location.pathname === '/register' ? 'text-blue-700 font-bold border-b-2 border-white' : ''
+          className={`ecosajha-nav-link-item ${
+            location.pathname === '/register' ? 'ecosajha-nav-link-active-state' : ''
           }`}
-          onClick={() => navigate('/register')}
+          onClick={() => { navigate('/register'); setMenuOpen(false); }}
         >
           Register
         </div>
@@ -55,3 +68,4 @@ export default function Navbar() {
     </nav>
   );
 }
+  

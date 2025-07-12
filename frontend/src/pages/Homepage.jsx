@@ -3,13 +3,15 @@ import '../cssfolder/Homepage.css'
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-import houseImage from '../assets/house.png';
-import savinghandsImage from '../assets/savinghands.png';
-import recycleImage from '../assets/recycleimage.png';
 import dustbinImage from '../assets/dustbin.png';
 import infoImage from '../assets/info.png';
 import bottlesImage from '../assets/bottles.png';
 import Footer from "../components/Footer";
+
+// Eco images for hero section
+import earthImage from '../assets/recylcelogo.webp';
+import greenlivingImage from '../assets/greenliving.webp';
+import recycleImage from '../assets/recycleimage.png';
 
 // Paper category images
 import newspaperImage from '../assets/newspaper.jpg';
@@ -22,9 +24,7 @@ import eggImage from '../assets/eggcrates.jpg';
 import cartoonImage from '../assets/cartoon.jpg';
 import confidentalImage from '../assets/confidental.jpg';
 
-
 // Glass and Plastic category images 
-
 import plasticBottleImage from '../assets/plasticbottle.jpg';
 import glassBottleImage from '../assets/glassbottles.jpg';
 import plasticBagImage from '../assets/plasticbag.jpeg';
@@ -35,15 +35,13 @@ import tubeImage from '../assets/plastictubes.webp';
 import wrapperImage from '../assets/plasticwrappers.jpeg';
 import toyImage from '../assets/plastictoys.jpg';
 
-//Metal and steel category
-
+// Metal and steel category
 import aluminumCanImage from '../assets/alumuniumcans.jpeg';
 import ironImage from '../assets/ironscrap.jpeg';
 import copperImage from '../assets/copperwire.jpeg';
 import steelImage from '../assets/steelitems.jpeg';
 import wireImage from '../assets/mixedmetalwire.jpeg';
 import metalScrapImage from '../assets/heavymetalscrap.jpeg';
-
 
 // E-waste category 
 import mobileImage from '../assets/mobilephones.jpeg';
@@ -53,16 +51,10 @@ import printerImage from '../assets/printer.jpeg';
 import batteryImage from '../assets/battery.jpeg';
 import circuitImage from '../assets/circuitimage.jpeg';
 
+// Brass category
 import brassPipeImage from '../assets/brassimage.jpeg';
 import brassVesselImage from '../assets/brassvessel.jpeg';
 import brassFittingImage from '../assets/brassfittings.jpeg';
-
-// petBottle category 
-
-import petBottleImage from '../assets/petbottle.webp';
-import beerBottleImage from '../assets/beerbottle.jpeg';
-import wineBottleImage from '../assets/winebottle.jpeg';
-
 
 // Others category 
 import rubberImage from '../assets/rubberwaste.jpeg';
@@ -74,30 +66,23 @@ export default function Homepage(){
     const [activeCategory, setActiveCategory] = useState('Paper');
 
     const playWelcomeAudio = () => {
-    // Check if speech synthesis is supported   
-    if ('speechSynthesis' in window) {
-        // Create a new speech synthesis utterance
-        const utterance = new SpeechSynthesisUtterance('Rahul Welcome  you to ecosajha recycling website. Lets Be a Proud Recycler . Recycle Now');
-        
-        // Optional: Configure voice properties
-        utterance.rate = 1; // Speed of speech
-        utterance.pitch = 1; // Pitch of voice
-        utterance.volume = 1; // Volume level
-        
-        // Optional: Set voice (you can customize this)
-        const voices = speechSynthesis.getVoices();
-        if (voices.length > 0) {
-            utterance.voice = voices[0]; // Use first available voice
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance('Rahul Welcome you to ecosajha recycling website. Lets Be a Proud Recycler. Recycle Now');
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            
+            const voices = speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                utterance.voice = voices[0];
+            }
+            
+            speechSynthesis.speak(utterance);
+        } else {
+            console.log('Speech synthesis not supported');
+            alert('Welcome to recycling website');
         }
-        
-        // Play the audio
-        speechSynthesis.speak(utterance);
-    } else {
-        // Fallback for browsers that don't support speech synthesis
-        console.log('Speech synthesis not supported');
-        alert('Welcome to recycling website');
-    }
-};
+    };
 
     const categoryData = {
         'Paper': [
@@ -308,26 +293,6 @@ export default function Homepage(){
                 description: 'Door handles and decorative items'
             }
         ],
-        'PET bottle': [
-            {
-                image: petBottleImage,
-                name: 'PET Bottles',
-                price: 'Est. Rs.18/Kgs',
-                description: 'Clear plastic beverage bottles'
-            },
-            {
-                image: beerBottleImage,
-                name: 'Beer Bottles',
-                price: 'Est. Rs.8/Kgs',
-                description: 'Glass beer bottles'
-            },
-            {
-                image: wineBottleImage,
-                name: 'Wine Bottles',
-                price: 'Est. Rs.6/Kgs',
-                description: 'Glass wine and liquor bottles'
-            }
-        ],
         'Others': [
             {
                 image: rubberImage,
@@ -347,29 +312,59 @@ export default function Homepage(){
                 price: 'Est. Rs.5/Kgs',
                 description: 'Wooden furniture pieces'
             }
+        ],
+        'PET bottle': [
+            {
+                image: infoImage,
+                name: 'Conditions Apply',
+                price: '',
+                description: (
+                    <div className="conditions-container">
+                        <ul className="conditions-list">
+                            <li>All rates are estimates</li>
+                            <li>Sometimes rates are mutually decided at the venue</li>
+                            <li>Not everything listed here as examples might be accepted by all Khaalisisi friends</li>
+                            <li>Broken glass items are not accepted</li>
+                        </ul>
+                    </div>
+                )
+            }
         ]
     };
 
     return (
         <>
+            <Navbar/>
             <div>
-                <Navbar/>
-
                 <section className="hero">
                     <div className="hero-content">
                         <h1>Waste Collection Made Easy</h1>
                         <p>Schedule a pickup for your waste</p>
-                        <button className="request-btn">Request Pickup</button>
-                    </div>
-                    <div className="hero-icons">
-                        <div className="hero-icon-item">
-                            <img src={houseImage} alt="house image"/> 
+                        
+                        <div className="hero-buttons">
+                            <button onClick={() => { navigate('/login')}} className="request-btn">Request Pickup</button>
+                            <button className="what-we-buy-btn" onClick={() => {
+                                const element = document.querySelector('.categories-section');
+                                if (element) {
+                                    element.scrollIntoView({ behavior: 'smooth' });
+                                }
+                            }}>What We Buy</button>
                         </div>
-                        <div className="hero-icon-item">
-                            <img src={savinghandsImage} alt="savinghands image"/> 
-                        </div>
-                        <div className="hero-icon-item">
-                            <img id="recycle" src={recycleImage} alt="recycle image" /> 
+                        
+                        {/* Fixed: Eco images moved outside hero-buttons */}
+                        <div className="eco-images">
+                            <div className="eco-image-item">
+                                <img src={greenlivingImage} alt="Eco house with solar panels" />
+                                <span>Green Living</span>
+                            </div>
+                            <div className="eco-image-item">
+                                <img src={earthImage} alt="Save Earth" />
+                                <span>Save Earth</span>
+                            </div>
+                            <div className="eco-image-item">
+                                <img src={recycleImage} alt="Recycle bottles" />
+                                <span>Recycle</span>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -378,7 +373,7 @@ export default function Homepage(){
                 <section className="video-section">
                     <div className="video-content">
                         <h2 className="trash">Got TRASH</h2>
-<div className="play-btn" onClick={playWelcomeAudio}>▶</div>
+                        <div className="play-btn" onClick={playWelcomeAudio}>▶</div>
                         <div className="video-text">
                             <p><strong>Be a Proud Recycler</strong></p>
                             <p>Request pickup now</p>
@@ -418,48 +413,29 @@ export default function Homepage(){
                             >
                                 {category}
                             </button>
-                            
                         ))}
-                         <button 
+                        <button 
                             className={`category-tab ${activeCategory === 'PET bottle' ? 'active' : ''}`}
                             onClick={() => setActiveCategory('PET bottle')}
                         >
-                            PET bottle
+                            Conditions
                         </button>
                     </div>
 
-                   
-
                     {/* Items Grid */}
                     <div className="items-grid">
-                        {categoryData[activeCategory].map((item, index) => (
+                        {categoryData[activeCategory]?.map((item, index) => (
                             <div key={index} className="item-card">
                                 <div className="item-image">
                                     <img className="news" src={item.image} alt={`${item.name} image`} /> 
                                 </div>
                                 <h3>{item.name}</h3>
-                                <p className="item-price">{item.price}</p>
-                                <p className="item-description">{item.description}</p>
+                                {item.price && <p className="item-price">{item.price}</p>}
+                                <div className="item-description">{item.description}</div>
                             </div>
                         ))}
                     </div>
                 </section>
-
-                {/* Footer Info */}
-                <footer className="footer-info">
-                    <div className="footer-content">
-                        <div className="footer-title">Conditions Apply</div>
-                        <ul>
-                            <li>• All rates are estimates</li>
-                            <li>• Sometimes rates are mutually decided at the venue</li>
-                            <li>• Not everything listed here as examples might be accepted by all partners</li>
-                            <li>• Broken glass items are not accepted</li>
-                            <li>• E-waste items must be in working condition for better rates</li>
-                            <li>• Metal items should be clean and sorted by type</li>
-                        </ul>
-                    </div>
-                </footer>
-
                 <Footer/>
             </div>
         </>
