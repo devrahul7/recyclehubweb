@@ -43,7 +43,7 @@ const Footer = () => {
                 <a onClick={() => { navigate('/about')}} className="footer-link footer-text-small">About Us</a>
               </li>
               <li>
-                <a honClick={() => { navigate('/services')}} className="footer-link footer-text-small">Services</a>
+                <a onClick={() => { navigate('/services')}} className="footer-link footer-text-small">Services</a>
               </li>
               <li>
                 <a onClick={() => { navigate('/contact')}} className="footer-link footer-text-small">Contact</a>
