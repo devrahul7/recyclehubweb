@@ -12,6 +12,8 @@ import Footer from "../components/Footer";
 import earthImage from '../assets/recylcelogo.webp';
 import greenlivingImage from '../assets/greenliving.webp';
 import recycleImage from '../assets/recycleimage.png';
+import waterImage from '../assets/waterearth.png';
+import reuseImage from '../assets/reuse.jpg';
 
 // Paper category images
 import newspaperImage from '../assets/newspaper.jpg';
@@ -64,13 +66,28 @@ import woodImage from '../assets/woodscrap.jpg';
 export default function Homepage(){
     const navigate = useNavigate();
     const [activeCategory, setActiveCategory] = useState('Paper');
+    const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
     const playWelcomeAudio = () => {
         if ('speechSynthesis' in window) {
+            // Stop any ongoing speech
+            speechSynthesis.cancel();
+            
+            setIsAudioPlaying(true);
+            
             const utterance = new SpeechSynthesisUtterance('Rahul Welcome you to ecosajha recycling website. Lets Be a Proud Recycler. Recycle Now');
             utterance.rate = 1;
             utterance.pitch = 1;
             utterance.volume = 1;
+            
+            // Add event listeners for when speech ends
+            utterance.onend = () => {
+                setIsAudioPlaying(false);
+            };
+            
+            utterance.onerror = () => {
+                setIsAudioPlaying(false);
+            };
             
             const voices = speechSynthesis.getVoices();
             if (voices.length > 0) {
@@ -81,6 +98,7 @@ export default function Homepage(){
         } else {
             console.log('Speech synthesis not supported');
             alert('Welcome to recycling website');
+            setIsAudioPlaying(false);
         }
     };
 
@@ -351,32 +369,61 @@ export default function Homepage(){
                             }}>What We Buy</button>
                         </div>
                         
-                        {/* Fixed: Eco images moved outside hero-buttons */}
-                        <div className="eco-images">
-                            <div className="eco-image-item">
-                                <img src={greenlivingImage} alt="Eco house with solar panels" />
-                                <span>Green Living</span>
-                            </div>
-                            <div className="eco-image-item">
-                                <img src={earthImage} alt="Save Earth" />
-                                <span>Save Earth</span>
-                            </div>
-                            <div className="eco-image-item">
-                                <img src={recycleImage} alt="Recycle bottles" />
-                                <span>Recycle</span>
+                        {/* Updated scrollable eco images container */}
+                        <div className="eco-images-container">
+                            <div className="eco-images">
+                                <div className="eco-image-item">
+                                    <img src={greenlivingImage} alt="Eco house with solar panels" />
+                                    <span>Green Living</span>
+                                </div>
+                                <div className="eco-image-item">
+                                    <img src={earthImage} alt="Save Earth" />
+                                    <span>Save Earth</span>
+                                </div>
+                                <div className="eco-image-item">
+                                    <img src={recycleImage} alt="Recycle bottles" />
+                                    <span>Recycle</span>
+                                </div>
+                                <div className="eco-image-item">
+                                    <img src={waterImage} alt="Conservation" />
+                                    <span>Conservation</span>
+                                </div>
+                                <div className="eco-image-item">
+                                    <img src={reuseImage} alt="Reuse" />
+                                    <span>Reuse</span>
+                                </div>
+                                <div className="eco-image-item">
+                                    <img src={greenlivingImage} alt="Sustainable living" />
+                                    <span>Sustainable</span>
+                                </div>
+                                <div className="eco-image-item">
+                                    <img src={earthImage} alt="Eco-friendly" />
+                                    <span>Eco-Friendly</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Video Section */}
+                {/* Updated Video Section with playing indicator */}
                 <section className="video-section">
                     <div className="video-content">
                         <h2 className="trash">Got TRASH</h2>
-                        <div className="play-btn" onClick={playWelcomeAudio}>▶</div>
+                        <div className={`play-btn ${isAudioPlaying ? 'playing' : ''}`} onClick={playWelcomeAudio}>
+                            {isAudioPlaying ? (
+                                <div className="sound-waves">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            ) : (
+                                "▶"
+                            )}
+                        </div>
                         <div className="video-text">
                             <p><strong>Be a Proud Recycler</strong></p>
                             <p>Request pickup now</p>
+                            {isAudioPlaying && <p className="playing-indicator">🔊 Playing audio...</p>}
                         </div>
                     </div>
                     <div className="video-image">

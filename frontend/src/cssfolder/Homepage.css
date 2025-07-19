@@ -42,7 +42,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* Hero Buttons Container - Fixed */
+/* Hero Buttons Container */
 .hero-buttons {
     display: flex;
     gap: 15px;
@@ -87,15 +87,41 @@ body {
     box-shadow: 0 6px 20px rgba(102, 187, 106, 0.4);
 }
 
-/* Eco Images Section - Fixed and Enhanced */
+/* Scrollable Eco Images Container */
+.eco-images-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 20px 0;
+    margin-top: 10px;
+    scroll-behavior: smooth;
+}
+
+.eco-images-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.eco-images-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.eco-images-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    border-radius: 10px;
+}
+
+.eco-images-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #66BB6A, #81C784);
+}
+
+/* Updated Eco Images for horizontal scrolling */
 .eco-images {
     display: flex;
-    justify-content: center;
     gap: 30px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 30px 0;
+    padding: 30px 20px;
+    min-width: max-content;
+    justify-content: flex-start;
 }
 
 .eco-image-item {
@@ -106,9 +132,9 @@ body {
     transition: transform 0.3s ease;
     padding: 15px;
     border-radius: 15px;
-    /* background: rgba(76, 175, 80, 0.05);  */
     min-width: 150px;
     border: 1px solid rgba(76, 175, 80, 0.1);
+    flex-shrink: 0;
 }
 
 .eco-image-item:hover {
@@ -198,6 +224,77 @@ body {
 .play-btn:active {
     transform: scale(0.95);
     box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+}
+
+/* Playing state for play button */
+.play-btn.playing {
+    background: linear-gradient(135deg, #FF5722, #FF7043);
+    animation: pulse-playing 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-playing {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 6px 20px rgba(255, 87, 34, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(255, 87, 34, 0.5);
+    }
+}
+
+/* Sound waves animation */
+.sound-waves {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    justify-content: center;
+}
+
+.sound-waves span {
+    width: 4px;
+    height: 20px;
+    background: white;
+    border-radius: 2px;
+    animation: sound-wave 1.2s ease-in-out infinite;
+}
+
+.sound-waves span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.sound-waves span:nth-child(2) {
+    animation-delay: 0.2s;
+    height: 30px;
+}
+
+.sound-waves span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes sound-wave {
+    0%, 100% {
+        height: 15px;
+        opacity: 0.5;
+    }
+    50% {
+        height: 30px;
+        opacity: 1;
+    }
+}
+
+/* Playing indicator text */
+.playing-indicator {
+    color: #FF5722 !important;
+    font-weight: bold;
+    animation: blink 1.5s ease-in-out infinite;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 #dustbin {
@@ -718,19 +815,18 @@ body {
         min-height: 280px;
     }
     
+    /* Mobile scrollable eco images */
+    .eco-images-container {
+        padding: 15px 0;
+    }
+    
     .eco-images {
         gap: 20px;
-        margin-top: 20px;
-        flex-direction: column;
-        align-items: center;
+        padding: 20px 10px;
     }
     
     .eco-image-item {
-        flex-direction: row;
-        gap: 15px;
-        min-width: auto;
-        width: 100%;
-        max-width: 300px;
+        min-width: 120px;
     }
     
     .eco-image-item img {
@@ -824,7 +920,11 @@ body {
     
     .eco-images {
         gap: 15px;
-        margin-top: 15px;
+        padding: 15px 5px;
+    }
+    
+    .eco-image-item {
+        min-width: 100px;
     }
     
     .eco-image-item img {
@@ -834,6 +934,15 @@ body {
     
     .eco-image-item span {
         font-size: 0.75em;
+    }
+    
+    .sound-waves span {
+        width: 3px;
+        height: 15px;
+    }
+    
+    .sound-waves span:nth-child(2) {
+        height: 20px;
     }
     
     .conditions-container {
@@ -849,15 +958,8 @@ body {
 
 /* Additional mobile responsiveness for very small screens */
 @media (max-width: 320px) {
-    .eco-images {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-    
     .eco-image-item {
-        flex-direction: row;
-        gap: 10px;
+        min-width: 90px;
     }
     
     .eco-image-item img {

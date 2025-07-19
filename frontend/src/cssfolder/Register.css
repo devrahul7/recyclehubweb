@@ -18,15 +18,15 @@ body {
 
 /* Main Wrapper */
 .ecoSajha__main-wrapper {
-  min-height: 100vh;
-  background-color: #ffffff;
-  padding: 2rem 0;
+  min-height: 70vh;
+  background-color: #559b8f;
+  padding: 0rem 0;
 }
 
 .ecoSajha__page-container {
   max-width: 1900px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 0 rem;
 }
 
 .ecoSajha__content-grid {
@@ -34,7 +34,7 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   align-items: center;
-  min-height: 80vh;
+  min-height: 60vh;
 }
 
 /* Image Column */

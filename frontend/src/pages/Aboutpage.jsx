@@ -48,26 +48,6 @@ const Aboutpage = () => {
     }
   ];
 
-  // Audio function for the play button
-  const playWelcomeAudio = () => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance('Welcome to EcoSajha recycling website. Lets Be a Proud Recycler. Recycle Now');
-      utterance.rate = 1;
-      utterance.pitch = 1;
-      utterance.volume = 1;
-      
-      const voices = speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        utterance.voice = voices[0];
-      }
-      
-      speechSynthesis.speak(utterance);
-    } else {
-      console.log('Speech synthesis not supported');
-      alert('Welcome to EcoSajha recycling website');
-    }
-  };
-
   // Intersection Observer for animations
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -75,7 +55,7 @@ const Aboutpage = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.style.animationDelay = `${entry.target.dataset.delay}ms`;
-            entry.target.classList.add('animate-in');
+            entry.target.classList.add('ecosajha-animate-card');
           }
         });
       },
@@ -83,7 +63,7 @@ const Aboutpage = () => {
     );
 
     // Observe benefit cards
-    document.querySelectorAll('.benefit-card').forEach((card, index) => {
+    document.querySelectorAll('.ecosajha-benefit-card').forEach((card, index) => {
       card.dataset.delay = index * 150;
       observer.observe(card);
     });
@@ -92,86 +72,89 @@ const Aboutpage = () => {
   }, []);
 
   const styles = {
-  container: {
-    minHeight: '100vh',
-    backgroundColor: '#f9fafb',
-    fontFamily: 'Arial, sans-serif'
-  },
-  howItWorksSection: {
-    padding: '3rem 1rem',
-    textAlign: 'center'
-  },
-  sectionContainer: {
-    maxWidth: '1280px',
-    margin: '0 auto'
-  },
-  sectionTitle: {
-    fontSize: '2.5rem',
-    fontWeight: 'bold',
-    color: '#1f2937',
-    marginBottom: '2rem',
-    background: 'linear-gradient(135deg, #4CAF50, #2E7D32)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text'
-  },
-  imagePlaceholder: {
-    maxWidth: '1190px',
-    margin: '0 auto',
-    padding: '0 1rem'
-  },
-  imageStyle: {
-    width: '100%',
-    height: 'auto',
-    borderRadius: '15px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-    border: '2px solid #e8f5e8',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-  }
-};
+    ecosajhaContainer: {
+      minHeight: '100vh',
+      backgroundColor: '#f9fafb',
+      fontFamily: 'Arial, sans-serif'
+    },
+    ecosajhaHowItWorksSection: {
+      padding: '3rem 1rem',
+      textAlign: 'center'
+    },
+    ecosajhaSectionContainer: {
+      maxWidth: '1000px', // Reduced from 1280px
+      margin: '0 auto'
+    },
+    ecosajhaSectionTitle: {
+      fontSize: '2.5rem',
+      fontWeight: 'bold',
+      color: '#1f2937',
+      marginBottom: '2rem',
+      background: 'linear-gradient(135deg, #4CAF50, #2E7D32)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      backgroundClip: 'text'
+    },
+    ecosajhaImagePlaceholder: {
+      maxWidth: '800px', // Reduced from 1190px
+      margin: '0 auto',
+      padding: '0 1rem'
+    },
+    ecosajhaImageStyle: {
+      width: '100%',
+      maxWidth: '750px', // Added max-width constraint
+      height: 'auto',
+      borderRadius: '15px',
+      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+      border: '2px solid #e8f5e8',
+      transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+    }
+  };
 
   return (
     <>
       <Navbar/>
-      <div style={styles.container}>
+      <div style={styles.ecosajhaContainer}>
         
         {/* Enhanced Hero Section */}
-        <section className="hero">
-          <div className="hero-content">
+        <section className="ecosajha-hero-section">
+          <div className="ecosajha-hero-content-wrapper">
             <h1>Waste Collection Made Easy</h1>
             <p>Schedule a pickup for your waste</p>
             
-            <div className="hero-buttons">
+            <div className="ecosajha-hero-action-buttons">
               <button 
                 onClick={() => navigate('/login')} 
-                className="request-btn"
+                className="ecosajha-request-pickup-btn"
               >
                 Request Pickup
               </button>
               <button 
-                className="what-we-buy-btn" 
-               onClick={() => { navigate('/')}}
+                className="ecosajha-what-we-buy-btn" 
+                onClick={() => { navigate('/')}}
               >
                 What We Buy
               </button>
             </div>
-           <div className="service-highlights">
-              <div className="highlight-card">
-                <div className="highlight-icon">
+
+            {/* Service Highlights - Fixed positioning */}
+            <div className="ecosajha-service-highlights-container">
+              <div className="ecosajha-service-highlight-card">
+                <div className="ecosajha-service-icon-wrapper">
                   <span>📞</span>
                 </div>
                 <h3>Quick Booking</h3>
                 <p>Schedule in 2 minutes</p>
               </div>
-              <div className="highlight-card">
-                <div className="highlight-icon">
+              <div className="ecosajha-service-highlight-card">
+                <div className="ecosajha-service-icon-wrapper">
                   <span>🚚</span>
                 </div>
                 <h3>Free Pickup</h3>
                 <p>No hidden charges</p>
               </div>
-              <div className="highlight-card">
-                <div className="highlight-icon">
+              <div className="ecosajha-service-highlight-card">
+                <div className="ecosajha-service-icon-wrapper">
                   <span>💰</span>
                 </div>
                 <h3>Instant Payment</h3>
@@ -181,61 +164,45 @@ const Aboutpage = () => {
           </div>
         </section>
 
-        {/* Enhanced Video Section */}
-        <section className="video-section">
-          <div className="video-content">
-            <h2 className="trash">Got TRASH</h2>
-            <div className="play-btn" onClick={playWelcomeAudio}>▶</div>
-            <div className="video-text">
-              <p><strong>Be a Proud Recycler</strong></p>
-              <p>Request pickup now</p>
+        {/* How it Works Section - With reduced image size */}
+        <section style={styles.ecosajhaHowItWorksSection}>
+          <div style={styles.ecosajhaSectionContainer}>
+            <h2 style={styles.ecosajhaSectionTitle}>How it works</h2>
+            <div style={styles.ecosajhaImagePlaceholder}>
+              <img 
+                src="/src/assets/ecosajhawork.png" 
+                alt="How it works process" 
+                style={styles.ecosajhaImageStyle} 
+              />
             </div>
-          </div>
-          <div className="video-image">
-            <img id="dustbin" src={dustbinImage} alt="dustbin image" /> 
           </div>
         </section>
 
-{/* How it Works Section - Simplified with Image Placeholder */}
-<section style={styles.howItWorksSection}>
-  <div style={styles.sectionContainer}>
-    <h2 style={styles.sectionTitle}>How it works</h2>
-    <div style={styles.imagePlaceholder}>
-      <img 
-        src="/src/assets/ecosajhawork.png" 
-        alt="How it works process" 
-        style={styles.imageStyle} 
-      />
-    </div>
-  </div>
-</section>
-
         {/* Enhanced Why EcoSajha Section */}
-        <section className="why-section">
-          <div className="section-container">
-            <h2 className="section-title">Why Choose EcoSajha?</h2>
-            <p className="section-subtitle">
+        <section className="ecosajha-benefits-section">
+          <div className="ecosajha-benefits-container">
+            <h2 className="ecosajha-benefits-title">Why Choose EcoSajha?</h2>
+            <p className="ecosajha-benefits-subtitle">
               Experience the difference with our comprehensive Recycling management solution
             </p>
-            <div className="benefits-grid">
+            <div className="ecosajha-benefits-grid-layout">
               {benefits.map((benefit, index) => (
                 <div 
                   key={index} 
-                  className="benefit-card"
+                  className="ecosajha-benefit-card"
                   style={{ '--card-color': benefit.color }}
                 >
-                  <div className="benefit-icon">
+                  <div className="ecosajha-benefit-icon-container">
                     <span>{benefit.icon}</span>
                   </div>
-                  <h3 className="benefit-title">{benefit.title}</h3>
-                  <p className="benefit-text">{benefit.description}</p>
+                  <h3 className="ecosajha-benefit-card-title">{benefit.title}</h3>
+                  <p className="ecosajha-benefit-card-description">{benefit.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-       
         <Footer/>
       </div>
     </>
