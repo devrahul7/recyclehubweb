@@ -1,12 +1,10 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
-const JWT_SECRET = process.env.JWT_SECRET ||'privateKey';
-
-const authenticateToken = async (req, res, next) => {
+export const authenticateToken = async (req, res, next) => {
   try {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
     if (!token) {
       return res.status(401).json({
@@ -15,7 +13,7 @@ const authenticateToken = async (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findByPk(decoded.userId);
 
     if (!user) {
@@ -25,15 +23,43 @@ const authenticateToken = async (req, res, next) => {
       });
     }
 
-    req.userId = user.id;
+    if (!user.isActive) {
+      return res.status(401).json({
+        success: false,
+        message: 'Account is deactivated'
+      });
+    }
+
     req.user = user;
     next();
   } catch (error) {
-    return res.status(403).json({
+    return res.status(401).json({
       success: false,
-      message: 'Invalid or expired token'
+      message: 'Invalid token'
     });
   }
 };
 
-export { authenticateToken };
+export const requireRole = (roles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required'
+      });
+    }
+
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: 'Insufficient permissions'
+      });
+    }
+
+    next();
+  };
+};
+
+export const requireAdmin = requireRole(['admin']);
+export const requireCollector = requireRole(['collector', 'admin']);
+export const requireUser = requireRole(['user', 'collector', 'admin']);

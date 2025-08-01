@@ -1,33 +1,72 @@
 import express from 'express';
 import { connectDB } from './database/db.js';
 import authRoutes from './routes/authRoutes.js';
-import cors from "cors"
+import recyclingItemRoutes from './routes/recyclingItemRoutes.js';
+import postedItemRoutes from './routes/postedItemRoutes.js';
+import collectionRequestRoutes from './routes/collectionRequestRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
+import wishlistRoutes from './routes/wishlistRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import './models/index.js';
+import { seedRecyclingItems } from './seeders/recyclingItemsSeeder.js';
+
+// Import middleware
+import {
+  securityHeaders,
+  corsOptions,
+  requestLogger,
+  errorLogger,
+  performanceLogger,
+  securityLogger,
+  generalLimiter,
+  errorHandler,
+  notFound
+} from './middleware/index.js';
 
 const app = express();
 const PORT = 5000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Apply security middleware
+app.use(securityHeaders);
+app.use(cors(corsOptions));
 
-app.use(cors())
+// Body parsing middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+// Apply logging and monitoring middleware
+app.use(requestLogger);
+app.use(performanceLogger);
+app.use(securityLogger);
 
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
+// Apply rate limiting
+app.use(generalLimiter);
 
+// API Routes
+// API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/recycling-items', recyclingItemRoutes);
+app.use('/api/posted-items', postedItemRoutes);
+app.use('/api/collection-requests', collectionRequestRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+
+// 404 handler
+app.use(notFound);
+
+// Error handling middleware (must be last)
+app.use(errorLogger);
+app.use(errorHandler);
 
 const startServer = async () => {
   try {
     await connectDB();
+    await seedRecyclingItems();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
