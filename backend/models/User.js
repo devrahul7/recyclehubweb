@@ -50,13 +50,74 @@ const User = sequelize.define('User', {
       notEmpty: true
     }
   },
-  wasteType: {
+  city: {
     type: DataTypes.STRING,
-    allowNull: false,
-    field: 'primary_waste_type',
+    allowNull: true,
     validate: {
-      notEmpty: true
+      len: [2, 100]
     }
+  },
+  role: {
+    type: DataTypes.ENUM('user', 'collector', 'admin'),
+    allowNull: false,
+    defaultValue: 'user'
+  },
+  isActive: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+    field: 'is_active'
+  },
+  profileImage: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: 'profile_image'
+  },
+  // For collectors
+  collectorId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: 'collector_id',
+    unique: true
+  },
+  rating: {
+    type: DataTypes.DECIMAL(3, 2),
+    allowNull: true,
+    defaultValue: 0.00,
+    validate: {
+      min: 0,
+      max: 5
+    }
+  },
+  totalCollections: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: 0,
+    field: 'total_collections'
+  },
+  totalEarnings: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+    defaultValue: 0.00,
+    field: 'total_earnings'
+  },
+  // For users
+  totalRecycledItems: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: 0,
+    field: 'total_recycled_items'
+  },
+  totalRecycledValue: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+    defaultValue: 0.00,
+    field: 'total_recycled_value'
+  },
+  lastActivity: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    field: 'last_activity'
   }
 }, {
   timestamps: true,
