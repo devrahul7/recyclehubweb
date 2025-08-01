@@ -1,82 +1,122 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import '../cssfolder/Navbar.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { Recycle, LogOut, User, Settings, Search, Heart, MessageSquare } from 'lucide-react';
 
-export default function EcoSajhaNavbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const Navbar = () => {
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const navItems = [
-    { path: '/about', label: 'About' },
-    { path: '/contact', label: 'Contact' },
-    { path: '/login', label: 'Login' },
-    { path: '/register', label: 'Register' }
-  ];
-
-  const handleNavigation = (path) => {
-    navigate(path);
-    setIsMenuOpen(false);
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
-    <nav className="ecosajha-navbar">
-      <div className="ecosajha-navbar-container">
-        {/* Logo */}
-        <div 
-          className="ecosajha-logo-wrapper"
-          onClick={() => handleNavigation('/')}
-        >
-          <img 
-            src="/logo.png" 
-            alt="EcoSajha" 
-            className="ecosajha-logo-icon"
-          />
-          <span className="ecosajha-logo-text">EcoSajha Recycle</span>
-        </div>
+    <nav className="bg-white shadow-lg border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <Link to="/dashboard" className="flex items-center space-x-2">
+              <Recycle className="h-8 w-8 text-green-600" />
+              <span className="text-xl font-bold text-gray-900">RecycleHub</span>
+            </Link>
+          </div>
 
-        {/* Desktop Navigation */}
-        <div className="ecosajha-nav-desktop">
-          {navItems.map(item => (
-            <button
-              key={item.path}
-              onClick={() => handleNavigation(item.path)}
-              className={`ecosajha-nav-link ${
-                location.pathname === item.path ? 'ecosajha-nav-link-active' : ''
-              }`}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <User className="h-5 w-5 text-gray-600" />
+              <span className="text-sm font-medium text-gray-700">{user.name}</span>
+              <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                user.role === 'admin'
+                  ? 'bg-purple-100 text-purple-800'
+                  : 'bg-green-100 text-green-800'
+              }`}>
+                {user.role}
+              </span>
+            </div>
+
+            <Link
+              to="/browse"
+              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
             >
-              {item.label}
-            </button>
-          ))}
-        </div>
+              <Search className="h-4 w-4" />
+              <span>Browse Items</span>
+            </Link>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="ecosajha-menu-button"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <svg className="ecosajha-menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
+            {user.role === 'user' && (
+              <Link
+                to="/my-items"
+                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                My Items
+              </Link>
+            )}
 
-      {/* Mobile Menu */}
-      <div className={`ecosajha-mobile-menu ${isMenuOpen ? 'open' : ''}`}>
-        <div className="ecosajha-mobile-nav-links">
-          {navItems.map(item => (
+            {user.role === 'user' && (
+              <Link
+                to="/my-likes"
+                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
+              >
+                <Heart className="h-4 w-4" />
+                <span>My Likes</span>
+              </Link>
+            )}
+
+            {user.role === 'user' && (
+              <Link
+                to="/my-reviews"
+                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span>My Reviews</span>
+              </Link>
+            )}
+
+            {user.role === 'admin' && (
+              <Link
+                to="/admin/likes"
+                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
+              >
+                <Heart className="h-4 w-4" />
+                <span>All Likes</span>
+              </Link>
+            )}
+
+            {user.role === 'admin' && (
+              <Link
+                to="/admin/reviews"
+                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span>All Reviews</span>
+              </Link>
+            )}
+
+            {user.role === 'user' && (
+              <Link
+                to="/profile"
+                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                <Settings className="h-4 w-4" />
+              </Link>
+            )}
+
             <button
-              key={item.path}
-              onClick={() => handleNavigation(item.path)}
-              className={`ecosajha-mobile-nav-link ${
-                location.pathname === item.path ? 'ecosajha-mobile-nav-link-active' : ''
-              }`}
+              onClick={handleLogout}
+              className="flex items-center space-x-1 text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
             >
-              {item.label}
+              <LogOut className="h-4 w-4" />
+              <span>Logout</span>
             </button>
-          ))}
+          </div>
         </div>
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;

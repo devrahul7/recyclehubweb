@@ -1,78 +1,54 @@
 import express from 'express';
-import { connectDB } from './database/db.js';
-import authRoutes from './routes/authRoutes.js';
-import recyclingItemRoutes from './routes/recyclingItemRoutes.js';
-import postedItemRoutes from './routes/postedItemRoutes.js';
-import collectionRequestRoutes from './routes/collectionRequestRoutes.js';
-import reviewRoutes from './routes/reviewRoutes.js';
-import notificationRoutes from './routes/notificationRoutes.js';
-import wishlistRoutes from './routes/wishlistRoutes.js';
-import userRoutes from './routes/userRoutes.js';
-import dashboardRoutes from './routes/dashboardRoutes.js';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { sequelize } from './config/database.js';
 import './models/index.js';
-import { seedRecyclingItems } from './seeders/recyclingItemsSeeder.js';
+import authRoutes from './routes/auth.js';
+import userRoutes from './routes/user.js';
+import adminRoutes from './routes/admin.js';
+import itemRoutes from './routes/item.js';
+import likeRoutes from './routes/like.js';
+import reviewRoutes from './routes/review.js';
+import categoryRoutes from './routes/category.js';
+import notificationRoutes from './routes/notification.js';
+import transactionRoutes from './routes/transaction.js';
 
-// Import middleware
-import {
-  securityHeaders,
-  corsOptions,
-  requestLogger,
-  errorLogger,
-  performanceLogger,
-  securityLogger,
-  generalLimiter,
-  errorHandler,
-  notFound
-} from './middleware/index.js';
+dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Apply security middleware
-app.use(securityHeaders);
-app.use(cors(corsOptions));
+app.use(cors());
+app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-// Apply logging and monitoring middleware
-app.use(requestLogger);
-app.use(performanceLogger);
-app.use(securityLogger);
-
-// Apply rate limiting
-app.use(generalLimiter);
-
-// API Routes
-// API Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/recycling-items', recyclingItemRoutes);
-app.use('/api/posted-items', postedItemRoutes);
-app.use('/api/collection-requests', collectionRequestRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/items', itemRoutes);
+app.use('/api/likes', likeRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/categories', categoryRoutes);
 app.use('/api/notifications', notificationRoutes);
-app.use('/api/wishlist', wishlistRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/transactions', transactionRoutes);
 
-// 404 handler
-app.use(notFound);
-
-// Error handling middleware (must be last)
-app.use(errorLogger);
-app.use(errorHandler);
+app.get('/', (req, res) => {
+  res.json({ message: 'Recycle Management System API' });
+});
 
 const startServer = async () => {
   try {
-    await connectDB();
-    await seedRecyclingItems();
+    await sequelize.authenticate();
+    console.log('Database connected successfully');
+    
+    await sequelize.sync({ force: false });
+    console.log('Database synced');
+    
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
+    console.error('Unable to start server:', error);
   }
 };
 

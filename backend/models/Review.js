@@ -1,11 +1,29 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../database/db.js';
+import { sequelize } from '../config/database.js';
+import User from './User.js';
+import Item from './Item.js';
 
 const Review = sequelize.define('Review', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: User,
+      key: 'id'
+    }
+  },
+  itemId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Item,
+      key: 'id'
+    }
   },
   rating: {
     type: DataTypes.INTEGER,
@@ -19,56 +37,15 @@ const Review = sequelize.define('Review', {
     type: DataTypes.TEXT,
     allowNull: true
   },
-  isAnonymous: {
+  isHelpful: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    field: 'is_anonymous'
-  },
-  isVerified: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    field: 'is_verified'
-  },
-  isActive: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-    field: 'is_active'
-  },
-  // Foreign keys
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    field: 'user_id',
-    references: {
-      model: 'users',
-      key: 'id'
-    }
-  },
-  collectorId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    field: 'collector_id',
-    references: {
-      model: 'users',
-      key: 'id'
-    }
-  },
-  collectionRequestId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    field: 'collection_request_id',
-    references: {
-      model: 'collection_requests',
-      key: 'id'
-    }
+    defaultValue: false
   }
 }, {
-  timestamps: true,
-  underscored: true,
-  tableName: 'reviews'
+  tableName: 'reviews',
+  timestamps: true
 });
 
-export default Review; 
+
+
+export default Review;

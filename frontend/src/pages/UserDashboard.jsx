@@ -1,99 +1,197 @@
-import React, { useState, useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import Sidebar from "../components/UserDashboard/Sidebar";
-import DashboardNav from "../components/UserDashboard/DashboardNav";
+import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
+import { Package, Clock, CheckCircle, XCircle, Plus, Heart, Star, Wallet, User } from 'lucide-react';
+import AddItemModal from '../components/AddItemModal';
+import ItemCard from '../components/ItemCard';
+import Transactions from '../components/Transactions';
+import UserProfile from '../components/UserProfile';
+import Notifications from '../components/Notifications';
 
 const UserDashboard = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [stats, setStats] = useState({
+    totalItems: 0,
+    pendingItems: 0,
+    approvedItems: 0,
+    rejectedItems: 0,
+    totalLikes: 0,
+    totalReviews: 0
+  });
+  const [recentItems, setRecentItems] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('dashboard');
 
-  // Extract active tab from current URL
-  const getActiveTabFromPath = (pathname) => {
-    const segments = pathname.split('/');
-    if (pathname === '/user/dashboard') return 'dashboard';
-    return segments[segments.length - 1]; // Get last segment
-  };
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
 
-  const activeTab = getActiveTabFromPath(location.pathname);
-
-  // Function to handle tab changes and navigation
-  const setActiveTab = (tabId) => {
-    if (tabId === 'dashboard') {
-      navigate('/user/dashboard');
-    } else {
-      navigate(`/user/dashboard/${tabId}`);
+  const fetchDashboardData = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/user/dashboard');
+      setStats(response.data.stats);
+      setRecentItems(response.data.recentItems);
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Close sidebar when screen size changes to desktop
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsSidebarOpen(false);
-      }
-    };
+  const handleItemAdded = () => {
+    fetchDashboardData();
+    setShowAddModal(false);
+  };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Handle navigation from items component to other sections
-  useEffect(() => {
-    const handleNavigateToWishlist = () => {
-      navigate('/user/dashboard/wishlist');
-    };
-
-    const handleNavigateToItems = () => {
-      navigate('/user/dashboard/items');
-    };
-
-    const handleNavigateToRecyclingQueue = () => {
-      navigate('/user/dashboard/recycling-queue');
-    };
-
-    window.addEventListener('navigate-to-wishlist', handleNavigateToWishlist);
-    window.addEventListener('navigate-to-items', handleNavigateToItems);
-    window.addEventListener('navigate-to-recycling-queue', handleNavigateToRecyclingQueue);
-    
-    return () => {
-      window.removeEventListener('navigate-to-wishlist', handleNavigateToWishlist);
-      window.removeEventListener('navigate-to-items', handleNavigateToItems);
-      window.removeEventListener('navigate-to-recycling-queue', handleNavigateToRecyclingQueue);
-    };
-  }, [navigate]);
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="flex h-screen">
-        {/* Sidebar - Fixed on desktop, overlay on mobile */}
-        <div className="lg:flex lg:flex-shrink-0">
-          <Sidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            isSidebarOpen={isSidebarOpen}
-            setIsSidebarOpen={setIsSidebarOpen}
-          />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Welcome back, {user?.name}!</h1>
+            <p className="text-gray-600 mt-2">Manage your recycle items and track your progress</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Notifications />
+          </div>
+        </div>
+        
+        <div className="mb-6">
+          <nav className="flex space-x-4">
+            <button
+              onClick={() => setActiveTab('dashboard')}
+              className={`px-4 py-2 rounded-md font-medium ${activeTab === 'dashboard' ? 'bg-green-600 text-white' : 'text-gray-600 hover:text-gray-900'}`}
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={() => setActiveTab('wallet')}
+              className={`px-4 py-2 rounded-md font-medium ${activeTab === 'wallet' ? 'bg-green-600 text-white' : 'text-gray-600 hover:text-gray-900'}`}
+            >
+              My Wallet
+            </button>
+            <button
+              onClick={() => setActiveTab('profile')}
+              className={`px-4 py-2 rounded-md font-medium ${activeTab === 'profile' ? 'bg-green-600 text-white' : 'text-gray-600 hover:text-gray-900'}`}
+            >
+              Profile
+            </button>
+          </nav>
         </div>
 
-        {/* Main content area */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Navigation header */}
-          <div className="flex-shrink-0">
-            <DashboardNav setIsSidebarOpen={setIsSidebarOpen} />
-          </div>
+        {activeTab === 'dashboard' && (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
+              <div className="bg-white rounded-lg shadow p-6 lg:col-span-1">
+                <div className="flex items-center">
+                  <Package className="h-8 w-8 text-blue-500" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Total Items</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.totalItems}</p>
+                  </div>
+                </div>
+              </div>
 
-          {/* Scrollable main content */}
-          <main className="flex-1 overflow-y-auto bg-gray-50">
-            <div className="container mx-auto px-4 py-6 lg:px-8 lg:py-8">
-              <div className="max-w-7xl mx-auto">
-                {/* This renders the matched child route */}
-                <Outlet />
+              <div className="bg-white rounded-lg shadow p-6 lg:col-span-1">
+                <div className="flex items-center">
+                  <Clock className="h-8 w-8 text-yellow-500" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Pending</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.pendingItems}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-6 lg:col-span-1">
+                <div className="flex items-center">
+                  <CheckCircle className="h-8 w-8 text-green-500" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Approved</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.approvedItems}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-6 lg:col-span-1">
+                <div className="flex items-center">
+                  <XCircle className="h-8 w-8 text-red-500" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Rejected</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.rejectedItems}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-lg shadow p-6 lg:col-span-1">
+                <div className="flex items-center">
+                  <Heart className="h-8 w-8 text-pink-500" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Likes</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.totalLikes || 0}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-lg shadow p-6 lg:col-span-1">
+                <div className="flex items-center">
+                  <Star className="h-8 w-8 text-yellow-400" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Reviews</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.totalReviews || 0}</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </main>
-        </div>
+
+            <div className="bg-white rounded-lg shadow mb-8">
+              <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 className="text-xl font-semibold text-gray-900">Recent Items</h2>
+                <button
+                  onClick={() => setShowAddModal(true)}
+                  className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Item
+                </button>
+              </div>
+              <div className="p-6">
+                {recentItems.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-500">No items yet. Add your first recycle item!</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {recentItems.map((item) => (
+                      <ItemCard key={item.id} item={item} onUpdate={fetchDashboardData} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+        
+        {activeTab === 'wallet' && <Transactions />}
+        
+        {activeTab === 'profile' && <UserProfile />}
       </div>
+
+      {showAddModal && (
+        <AddItemModal
+          onClose={() => setShowAddModal(false)}
+          onItemAdded={handleItemAdded}
+        />
+      )}
     </div>
   );
 };

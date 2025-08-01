@@ -1,182 +1,159 @@
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import Navbar from '../components/Navbar';
-import registerImage from '../assets/register.png';
-import '../cssfolder/Register.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { Mail, Lock, User, Recycle } from 'lucide-react';
 
-export default function Register() {
-  const { register, handleSubmit, reset } = useForm();
+const Register = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { register } = useAuth();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = async (data) => {
-    console.log(data)
-    try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      const response = await res.json()
-      console.log(response)
-
-      if (res.ok) {
-        alert('Registration successful!');
-        reset();
-        navigate('/login');
-      } else {
-        alert('Registration failed.');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error connecting to server.');
-    }
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    const result = await register(formData.name, formData.email, formData.password);
+    
+    if (result.success) {
+      navigate('/');
+    } else {
+      setError(result.message);
+    }
+    
+    setLoading(false);
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="ecoSajha__main-wrapper">
-        <div className="ecoSajha__page-container">
-          <div className="ecoSajha__content-grid">
-            
-            {/* Left Side - Image */}
-            <div className="ecoSajha__image-column">
-              <div className="ecoSajha__image-container">
-                <img src={registerImage} alt="EcoSajha Registration" className="ecoSajha__register-image" />
-                <div className="ecoSajha__image-content">
-                  <h2>Join the Green Revolution</h2>
-                  <p>Transform waste into wealth with Nepal's leading recycling platform</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Side - Form */}
-            <div className="ecoSajha__form-column">
-              <div className="ecoSajha__form-wrapper">
-                
-                {/* Header */}
-                <div className="ecoSajha__form-header">
-                  <div className="ecoSajha__logo-container">
-                    <div className="ecoSajha__logo">♻️</div>
-                  </div>
-                  <h1 className="ecoSajha__main-title">Create Account</h1>
-                  <p className="ecoSajha__main-subtitle">Join EcoSajha and start your sustainable journey</p>
-                </div>
-
-                {/* Registration Form */}
-                <form onSubmit={handleSubmit(onSubmit)} className="ecoSajha__registration-form">
-                  
-                  <div className="ecoSajha__input-row">
-                    <div className="ecoSajha__field-group">
-                      <label className="ecoSajha__field-label">Full Name</label>
-                      <input 
-                        {...register("fullName", { required: true })} 
-                        placeholder="Enter your full name"
-                        className="ecoSajha__field-input"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="ecoSajha__input-row">
-                    <div className="ecoSajha__field-group">
-                      <label className="ecoSajha__field-label">Email Address</label>
-                      <input 
-                        type="email" 
-                        {...register("email", { required: true })} 
-                        placeholder="your.email@example.com"
-                        className="ecoSajha__field-input"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="ecoSajha__input-row">
-                    <div className="ecoSajha__field-group">
-                      <label className="ecoSajha__field-label">Password</label>
-                      <div className="ecoSajha__password-container">
-                        <input 
-                          type={showPassword ? "text" : "password"} 
-                          {...register("password", { required: true })} 
-                          placeholder="Create a strong password"
-                          className="ecoSajha__field-input"
-                        />
-                        <button 
-                          type="button" 
-                          className="ecoSajha__password-btn"
-                          onClick={togglePasswordVisibility}
-                          aria-label={showPassword ? "Hide password" : "Show password"}
-                        >
-                          {showPassword ? "👁️" : "👁️‍🗨️"}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="ecoSajha__input-row ecoSajha__input-row--split">
-                    <div className="ecoSajha__field-group">
-                      <label className="ecoSajha__field-label">Phone Number</label>
-                      <input 
-                        type="tel" 
-                        {...register("phone", { required: true })} 
-                        placeholder="+977 98XXXXXXXX"
-                        className="ecoSajha__field-input"
-                      />
-                    </div>
-                    <div className="ecoSajha__field-group">
-                      <label className="ecoSajha__field-label">Address</label>
-                      <input 
-                        {...register("address", { required: true })} 
-                        placeholder="Street, Ward, District"
-                        className="ecoSajha__field-input"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="ecoSajha__input-row">
-                    <div className="ecoSajha__field-group">
-                      <label className="ecoSajha__field-label">Primary Waste Type</label>
-                      <select {...register("wasteType", { required: true })} className="ecoSajha__field-select">
-                        <option value="">Choose your primary waste type</option>
-                        <option value="paper">📄 Paper & Cardboard</option>
-                        <option value="plastic">🥤 Glass & Plastic</option>
-                        <option value="metal">🔧 Metal & Steel</option>
-                        <option value="electronic">💻 E-waste</option>
-                        <option value="mixed">♻️ Mixed Recyclables</option>
-                        <option value="organic">🌱 Organic Waste</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <button type="submit" className="ecoSajha__submit-button">
-                    <span>Create My Account</span>
-                    <svg className="ecoSajha__button-icon" viewBox="0 0 24 24" fill="none">
-                      <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </button>
-
-                </form>
-
-                {/* Login Link */}
-                <div className="ecoSajha__form-footer">
-                  <p>Already have an account? 
-                    <a onClick={() => navigate('/login')} className="ecoSajha__login-link">
-                      Sign in here
-                    </a>
-                  </p>
-                </div>
-
-              </div>
-            </div>
-
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <Recycle className="h-12 w-12 text-green-600" />
           </div>
+          <h2 className="text-3xl font-bold text-gray-900">Create Account</h2>
+          <p className="text-gray-600 mt-2">Join our recycle community</p>
+        </div>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md mb-6">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Full Name
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email Address
+            </label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Confirm Password
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200"
+          >
+            {loading ? 'Creating Account...' : 'Create Account'}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-gray-600">
+            Already have an account?{' '}
+            <Link to="/login" className="text-green-600 hover:text-green-700 font-medium">
+              Sign in
+            </Link>
+          </p>
         </div>
       </div>
-    </>
+    </div>
   );
-}
+};
+
+export default Register;

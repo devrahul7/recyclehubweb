@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../database/db.js';
+import { sequelize } from '../config/database.js';
+import User from './User.js';
 
 const Notification = sequelize.define('Notification', {
   id: {
@@ -7,77 +8,43 @@ const Notification = sequelize.define('Notification', {
     primaryKey: true,
     autoIncrement: true
   },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: User,
+      key: 'id'
+    }
+  },
   title: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      len: [1, 200],
-      notEmpty: true
-    }
+    allowNull: false
   },
   message: {
     type: DataTypes.TEXT,
     allowNull: false
   },
   type: {
-    type: DataTypes.ENUM('info', 'success', 'warning', 'error', 'collection_request', 'payment', 'review'),
-    allowNull: false,
+    type: DataTypes.ENUM('info', 'success', 'warning', 'error'),
     defaultValue: 'info'
   },
   isRead: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    field: 'is_read'
-  },
-  isActive: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-    field: 'is_active'
+    defaultValue: false
   },
   actionUrl: {
     type: DataTypes.STRING,
-    allowNull: true,
-    field: 'action_url'
+    allowNull: true
   },
-  actionText: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    field: 'action_text'
-  },
-  // Foreign keys
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    field: 'user_id',
-    references: {
-      model: 'users',
-      key: 'id'
-    }
-  },
-  collectionRequestId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    field: 'collection_request_id',
-    references: {
-      model: 'collection_requests',
-      key: 'id'
-    }
-  },
-  reviewId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    field: 'review_id',
-    references: {
-      model: 'reviews',
-      key: 'id'
-    }
+  priority: {
+    type: DataTypes.ENUM('low', 'medium', 'high'),
+    defaultValue: 'medium'
   }
 }, {
-  timestamps: true,
-  underscored: true,
-  tableName: 'notifications'
+  tableName: 'notifications',
+  timestamps: true
 });
 
-export default Notification; 
+
+
+export default Notification;

@@ -1,181 +1,83 @@
-import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-import { validationResult } from 'express-validator';
-import { Op } from 'sequelize';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'privateKey';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+import User from '../models/User.js';
 
 const generateToken = (userId) => {
-  return jwt.sign({ userId }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return jwt.sign({ userId }, process.env.JWT_SECRET || 'your-secret-key', {
+    expiresIn: '7d'
+  });
 };
 
-const register = async (req, res) => {
+export const register = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation failed',
-        errors: errors.array()
-      });
-    }
+    const { name, email, password } = req.body;
 
-    const {  fullName, email, password , phone ,address,wasteType} = req.body;
-
-    const existingUser = await User.findOne({
-      where: {
-          email 
-      }
-    });
-
-
+    const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email already exists'
-      });
+      return res.status(400).json({ message: 'User already exists' });
     }
 
     const user = await User.create({
-        fullName ,
-        email,
-        password,
-        phone,
-        address,
-        wasteType
+      name,
+      email,
+      password,
+      role: 'user'
     });
 
     const token = generateToken(user.id);
 
     res.status(201).json({
-      success: true,
-      message: 'User registered successfully',
-      data: {
-        user: {
-          id: user.id,
-          fullName: user.fullName,
-          email: user.email
-        },
-        token
+      message: 'User created successfully',
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
       }
     });
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-      error: error.message
-    });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation failed',
-        errors: errors.array()
-      });
-    }
-
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: 'Invalid email or password'
-      });
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    const isPasswordValid = await user.comparePassword(password);
-    if (!isPasswordValid) {
-      return res.status(401).json({
-        success: false,
-        message: 'Invalid email or password'
-      });
+    const isValidPassword = await user.comparePassword(password);
+    if (!isValidPassword) {
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const token = generateToken(user.id);
 
-    res.status(200).json({
-      success: true,
+    res.json({
       message: 'Login successful',
-      data: {
-        user: {
-          id: user.id,
-          username: user.username,
-          fullName: user.fullName,
-          email: user.email
-        },
-        token
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
       }
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-      error: error.message
-    });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-const getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
-    const user = await User.findByPk(req.userId, {
+    const user = await User.findByPk(req.user.id, {
       attributes: { exclude: ['password'] }
     });
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found'
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: { user }
-    });
+    res.json(user);
   } catch (error) {
-    console.error('Get profile error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-      error: error.message
-    });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
-
-const getAllUsers = async (req, res) => {
-  try {
-    const user = await User.findAll();
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found'
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: { user }
-    });
-  } catch (error) {
-    console.error('Get profile error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-      error: error.message
-    });
-  }
-};
-
-
-
-export { register, login, getProfile, getAllUsers };

@@ -1,67 +1,49 @@
 import User from './User.js';
-import RecyclingItem from './RecyclingItem.js';
-import PostedItem from './PostedItem.js';
-import CollectionRequest from './CollectionRequest.js';
-import CollectionRequestItem from './CollectionRequestItem.js';
+import Item from './Item.js';
+import Like from './Like.js';
 import Review from './Review.js';
+import Category from './Category.js';
 import Notification from './Notification.js';
-import Wishlist from './Wishlist.js';
-
-// Define associations
+import Transaction from './Transaction.js';
 
 // User associations
-User.hasMany(PostedItem, { foreignKey: 'userId', as: 'postedItems' });
-User.hasMany(CollectionRequest, { foreignKey: 'userId', as: 'collectionRequests' });
+User.hasMany(Item, { foreignKey: 'userId', as: 'items' });
+User.hasMany(Like, { foreignKey: 'userId', as: 'likes' });
 User.hasMany(Review, { foreignKey: 'userId', as: 'reviews' });
 User.hasMany(Notification, { foreignKey: 'userId', as: 'notifications' });
-User.hasMany(Wishlist, { foreignKey: 'userId', as: 'wishlist' });
+User.hasMany(Transaction, { foreignKey: 'userId', as: 'transactions' });
 
-// Collector associations (User as collector)
-User.hasMany(CollectionRequest, { foreignKey: 'collectorId', as: 'assignedCollections' });
-User.hasMany(Review, { foreignKey: 'collectorId', as: 'receivedReviews' });
+// Item associations
+Item.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+Item.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
+Item.hasMany(Like, { foreignKey: 'itemId', as: 'itemLikes' });
+Item.hasMany(Review, { foreignKey: 'itemId', as: 'itemReviews' });
+Item.hasMany(Transaction, { foreignKey: 'itemId', as: 'itemTransactions' });
 
-// RecyclingItem associations
-RecyclingItem.hasMany(CollectionRequestItem, { foreignKey: 'recyclingItemId', as: 'collectionRequestItems' });
-RecyclingItem.hasMany(Wishlist, { foreignKey: 'recyclingItemId', as: 'wishlistItems' });
+// Category associations
+Category.hasMany(Item, { foreignKey: 'categoryId', as: 'categoryItems' });
 
-// PostedItem associations
-PostedItem.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-PostedItem.hasMany(CollectionRequestItem, { foreignKey: 'postedItemId', as: 'collectionRequestItems' });
-
-// CollectionRequest associations
-CollectionRequest.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-CollectionRequest.belongsTo(User, { foreignKey: 'collectorId', as: 'collector' });
-CollectionRequest.hasMany(CollectionRequestItem, { foreignKey: 'collectionRequestId', as: 'items' });
-CollectionRequest.hasMany(Review, { foreignKey: 'collectionRequestId', as: 'reviews' });
-CollectionRequest.hasMany(Notification, { foreignKey: 'collectionRequestId', as: 'notifications' });
-
-// CollectionRequestItem associations
-CollectionRequestItem.belongsTo(CollectionRequest, { foreignKey: 'collectionRequestId', as: 'collectionRequest' });
-CollectionRequestItem.belongsTo(PostedItem, { foreignKey: 'postedItemId', as: 'postedItem' });
-CollectionRequestItem.belongsTo(RecyclingItem, { foreignKey: 'recyclingItemId', as: 'recyclingItem' });
+// Like associations
+Like.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+Like.belongsTo(Item, { foreignKey: 'itemId', as: 'item' });
 
 // Review associations
 Review.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-Review.belongsTo(User, { foreignKey: 'collectorId', as: 'collector' });
-Review.belongsTo(CollectionRequest, { foreignKey: 'collectionRequestId', as: 'collectionRequest' });
-Review.hasMany(Notification, { foreignKey: 'reviewId', as: 'notifications' });
+Review.belongsTo(Item, { foreignKey: 'itemId', as: 'item' });
 
 // Notification associations
 Notification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-Notification.belongsTo(CollectionRequest, { foreignKey: 'collectionRequestId', as: 'collectionRequest' });
-Notification.belongsTo(Review, { foreignKey: 'reviewId', as: 'review' });
 
-// Wishlist associations
-Wishlist.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-Wishlist.belongsTo(RecyclingItem, { foreignKey: 'recyclingItemId', as: 'recyclingItem' });
+// Transaction associations
+Transaction.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+Transaction.belongsTo(Item, { foreignKey: 'itemId', as: 'item' });
 
 export {
   User,
-  RecyclingItem,
-  PostedItem,
-  CollectionRequest,
-  CollectionRequestItem,
+  Item,
+  Like,
   Review,
+  Category,
   Notification,
-  Wishlist
-}; 
+  Transaction
+};
