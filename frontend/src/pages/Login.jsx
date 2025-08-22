@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { Mail, Lock, Recycle, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
@@ -9,6 +11,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,20 +26,15 @@ const Login = () => {
     setLoading(true);
     setError('');
 
-    // Simulate login logic
-    setTimeout(() => {
-      if (formData.email === 'admin@recycle.com' && formData.password === 'admin123') {
-        setError('');
-        alert('Login successful!');
-      } else {
-        setError('Invalid email or password');
-      }
-      setLoading(false);
-    }, 1000);
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    const result = await login(formData.email, formData.password);
+    
+    if (result.success) {
+      navigate('/');
+    } else {
+      setError(result.message);
+    }
+    
+    setLoading(false);
   };
 
   return (
@@ -55,7 +54,7 @@ const Login = () => {
           </div>
         )}
 
-        <div className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Email Address
@@ -81,7 +80,7 @@ const Login = () => {
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -91,35 +90,29 @@ const Login = () => {
               />
               <button
                 type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-200"
-                title={showPassword ? 'Hide password' : 'Show password'}
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 hover:text-gray-600"
               >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
             </div>
           </div>
 
           <button
-            type="button"
-            onClick={handleSubmit}
+            type="submit"
             disabled={loading}
             className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
-        </div>
+        </form>
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
             Don't have an account?{' '}
-            <span className="text-green-600 hover:text-green-700 font-medium cursor-pointer">
+            <Link to="/register" className="text-green-600 hover:text-green-700 font-medium">
               Sign up
-            </span>
+            </Link>
           </p>
         </div>
 
@@ -133,4 +126,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;

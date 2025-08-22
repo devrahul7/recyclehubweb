@@ -29,7 +29,9 @@ const Likes = ({ itemId, initialLikesCount = 0, showCount = true }) => {
     }
   };
 
-  const toggleLike = async () => {
+  const toggleLike = async (e) => {
+    e.stopPropagation();
+    
     if (!user) {
       alert('Please login to like items');
       return;
@@ -63,7 +65,7 @@ const Likes = ({ itemId, initialLikesCount = 0, showCount = true }) => {
         disabled={loading}
         className={`flex items-center space-x-1 px-3 py-1 rounded-full transition-colors ${
           isLiked
-            ? 'bg-red-100 text-red-600 hover:bg-red-200'
+            ? 'bg-red-100 text-red-800 hover:bg-red-200'
             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
         } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
       >

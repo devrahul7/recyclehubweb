@@ -205,7 +205,12 @@ const BrowseItems = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {items.map((item) => (
-              <div key={item.id} onClick={() => handleItemClick(item)} className="cursor-pointer">
+              <div key={item.id} onClick={(e) => {
+                if (e.target.closest('button') || e.target.closest('[role="button"]')) {
+                  return;
+                }
+                handleItemClick(item);
+              }} className="cursor-pointer">
                 <ItemCard item={item} onUpdate={fetchItems} showUser={true} />
               </div>
             ))}

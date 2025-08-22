@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const sequelize = new Sequelize(
-  'ecosajha',
+  'recycle_db',
   'postgres',
   'admin123',
   {

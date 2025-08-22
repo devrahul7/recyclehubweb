@@ -14,33 +14,32 @@ export const toggleLike = async (req, res) => {
       where: { userId, itemId }
     });
 
+    let isLiked;
     if (existingLike) {
       await existingLike.destroy({ transaction });
       await Item.decrement('likesCount', { 
         where: { id: itemId },
         transaction 
       });
-      
-      await transaction.commit();
-      return res.json({ 
-        success: true, 
-        liked: false, 
-        message: 'Like removed' 
-      });
+      isLiked = false;
     } else {
       await Like.create({ userId, itemId }, { transaction });
       await Item.increment('likesCount', { 
         where: { id: itemId },
         transaction 
       });
-      
-      await transaction.commit();
-      return res.json({ 
-        success: true, 
-        liked: true, 
-        message: 'Item liked' 
-      });
+      isLiked = true;
     }
+    
+    const updatedItem = await Item.findByPk(itemId, { transaction });
+    
+    await transaction.commit();
+    return res.json({ 
+      success: true, 
+      isLiked: isLiked,
+      likesCount: updatedItem.likesCount,
+      message: isLiked ? 'Item liked' : 'Like removed'
+    });
   } catch (error) {
     await transaction.rollback();
     res.status(500).json({ message: 'Server error', error: error.message });

@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
-import { User, Mail, Phone, MapPin, Save } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Save, Lock } from 'lucide-react';
 
 const Profile = () => {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    address: ''
+    address: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
@@ -19,7 +22,10 @@ const Profile = () => {
       setFormData({
         name: user.name || '',
         phone: user.phone || '',
-        address: user.address || ''
+        address: user.address || '',
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
       });
     }
   }, [user]);
@@ -37,9 +43,48 @@ const Profile = () => {
     setError('');
     setSuccess('');
 
+    if (formData.newPassword) {
+      if (!formData.currentPassword) {
+        setError('Current password is required to set a new password');
+        setLoading(false);
+        return;
+      }
+      if (formData.newPassword !== formData.confirmPassword) {
+        setError('New passwords do not match');
+        setLoading(false);
+        return;
+      }
+      if (formData.newPassword.length < 6) {
+        setError('New password must be at least 6 characters');
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
-      await axios.put('http://localhost:5000/api/user/profile', formData);
+      const updateData = {
+        name: formData.name,
+        phone: formData.phone,
+        address: formData.address
+      };
+
+      if (formData.newPassword && formData.currentPassword) {
+        updateData.currentPassword = formData.currentPassword;
+        updateData.newPassword = formData.newPassword;
+      }
+
+      const token = localStorage.getItem('token');
+      await axios.put('http://localhost:5000/api/user/profile', updateData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
       setSuccess('Profile updated successfully!');
+      setFormData({
+        ...formData,
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      });
       setTimeout(() => setSuccess(''), 3000);
     } catch (error) {
       setError(error.response?.data?.message || 'Failed to update profile');
@@ -135,6 +180,66 @@ const Profile = () => {
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Enter your address"
                 />
+              </div>
+            </div>
+
+            <div className="border-t pt-6 mt-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Change Password</h3>
+              <p className="text-sm text-gray-600 mb-4">Leave blank if you don't want to change your password</p>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Current Password
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <input
+                      type="password"
+                      name="currentPassword"
+                      value={formData.currentPassword}
+                      onChange={handleChange}
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      placeholder="Enter current password"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      New Password
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <input
+                        type="password"
+                        name="newPassword"
+                        value={formData.newPassword}
+                        onChange={handleChange}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        placeholder="Enter new password"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Confirm New Password
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        placeholder="Confirm new password"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
